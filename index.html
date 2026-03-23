@@ -78,16 +78,16 @@
   .skill-card h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent3); margin-bottom: 0.6rem; }
   .skill-card p { color: var(--muted); font-size: 0.84rem; }
 
-  /* PROJECTS */
-  .projects-scroll-wrapper { overflow-x: auto; overflow-y: hidden; width: 100%; cursor: grab; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-  .projects-scroll-wrapper::-webkit-scrollbar { height: 4px; }
-  .projects-scroll-wrapper::-webkit-scrollbar-track { background: var(--surface); border-radius: 2px; }
-  .projects-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .projects-grid { display: flex; gap: 1.25rem; width: max-content; }
+
+  .projects-scroll-wrapper { overflow: hidden; width: 100%; }
+  .projects-grid { display: flex; gap: 1.25rem; width: max-content; animation: scrollLeft 35s linear infinite; }
+  .projects-grid:hover { animation-play-state: paused; }
+  @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; min-width: 310px; max-width: 310px; flex-shrink: 0; }
   .project-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
-  .project-header { margin-bottom: 0.4rem; }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; }
   .project-title { font-weight: 700; font-size: 0.92rem; }
+  .project-date { color: var(--muted); font-size: 0.75rem; white-space: nowrap; margin-left: 0.75rem; }
   .project-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; padding-left: 1rem; }
   .project-desc li { margin-bottom: 0.3rem; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
@@ -117,11 +117,12 @@
   .extra-link:hover { color: var(--accent3); }
 
   /* CONTACT */
-  .contact-intro { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.93rem; text-align: center; }
-  .contact-links { display: flex; gap: 1.5rem; flex-direction: row; justify-content: center; }
-  .contact-item { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+  #contact { text-align: center; }
+  .contact-intro { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.93rem; }
+  .contact-links { display: flex; gap: 1.5rem; justify-content: center; }
+  .contact-item { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
   .contact-item:hover { border-color: var(--accent2); transform: translateY(-3px); }
-  .contact-item svg { width: 22px; height: 22px; fill: var(--muted); transition: fill 0.2s; }
+  .contact-item svg { width: 24px; height: 24px; fill: var(--muted); transition: fill 0.2s; }
   .contact-item:hover svg { fill: var(--accent3); }
 
   footer { text-align: center; padding: 1.5rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
@@ -211,7 +212,7 @@
         <div class="fun-fact-item">
           <span>📖</span>
           <a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="colloque-link">Colloque Magazine</a>
-          <span>— editor-in-chief </span>
+          <span>— co-founded & edited</span>
         </div>
       </div>
     </div>
@@ -248,7 +249,7 @@
   <div class="projects-scroll-wrapper">
     <div class="projects-grid">
       <div class="project-card">
-        <div class="project-header"><span class="project-title">Restaurant Visits Database System</span></div>
+        <div class="project-header"><span class="project-title">Restaurant Visits Database System</span><span class="project-date">Mar 2026</span></div>
         <ul class="project-desc">
           <li>Normalized 8-table MySQL schema (3NF) with full ERD, surrogate keys & FK relationships</li>
           <li>Automated DB creation & bulk CSV loading via R on Aiven MySQL</li>
@@ -258,7 +259,7 @@
         <div class="project-tags"><span class="project-tag">MySQL</span><span class="project-tag">R</span><span class="project-tag">SQLite</span><span class="project-tag">ETL</span></div>
       </div>
       <div class="project-card">
-        <div class="project-header"><span class="project-title">E-Commerce Recommendation System</span></div>
+        <div class="project-header"><span class="project-title">E-Commerce Recommendation System</span><span class="project-date">Dec 2025</span></div>
         <ul class="project-desc">
           <li>Apriori + DistilBERT on 38K+ transactions and 4K+ reviews</li>
           <li>End-to-end pipeline: SQLite, ETL, NLP across 167 categories</li>
@@ -268,7 +269,7 @@
         <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">NLP</span><span class="project-tag">DistilBERT</span><span class="project-tag">Streamlit</span></div>
       </div>
       <div class="project-card">
-        <div class="project-header"><span class="project-title">Breast Tumor Bed Volume Estimation</span></div>
+        <div class="project-header"><span class="project-title">Breast Tumor Bed Volume Estimation</span><span class="project-date">Nov 2023 – Jun 2025</span></div>
         <ul class="project-desc">
           <li>Led team of 6 with Nanavati Max Super Speciality Hospital, Mumbai</li>
           <li>AI model to auto-segment tumor beds via surgical clips & pre-surgical scans</li>
@@ -277,7 +278,7 @@
         <div class="project-tags"><span class="project-tag">Deep Learning</span><span class="project-tag">Medical Imaging</span><span class="project-tag">Research</span></div>
       </div>
       <div class="project-card">
-        <div class="project-header"><span class="project-title">Deepfake Audio Detection</span></div>
+        <div class="project-header"><span class="project-title">Deepfake Audio Detection</span><span class="project-date">Jun – Nov 2024</span></div>
         <ul class="project-desc">
           <li>13,000+ audio files from "For and Real" dataset via image-based conversion</li>
           <li>Tested TCN, GRU, EfficientNet on STFT, Melspectrogram & MFCC features</li>
@@ -286,7 +287,7 @@
         <div class="project-tags"><span class="project-tag">EfficientNet</span><span class="project-tag">GRU</span><span class="project-tag">Audio ML</span></div>
       </div>
       <div class="project-card">
-        <div class="project-header"><span class="project-title">Password Strength Classifier</span></div>
+        <div class="project-header"><span class="project-title">Password Strength Classifier</span><span class="project-date">Mar 2023</span></div>
         <ul class="project-desc">
           <li>SVM, KNN, Random Forest with engineered features</li>
           <li>SVM achieved 99.98% accuracy; addressed imbalance via under-sampling</li>
@@ -402,6 +403,14 @@
 </section>
 
 <footer>© 2026 Rutuja Jadhav</footer>
+<script>
+  const wrapper = document.querySelector('.projects-scroll-wrapper');
+  let isDown = false, startX, scrollLeft;
+  wrapper.addEventListener('mousedown', e => { isDown = true; wrapper.classList.add('dragging'); startX = e.pageX - wrapper.offsetLeft; scrollLeft = wrapper.scrollLeft; });
+  wrapper.addEventListener('mouseleave', () => { isDown = false; wrapper.classList.remove('dragging'); });
+  wrapper.addEventListener('mouseup', () => { isDown = false; wrapper.classList.remove('dragging'); });
+  wrapper.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - wrapper.offsetLeft; wrapper.scrollLeft = scrollLeft - (x - startX) * 1.5; });
+</script>
 
 </body>
 </html>
