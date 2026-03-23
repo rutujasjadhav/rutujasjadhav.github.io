@@ -54,6 +54,8 @@
 
   /* ABOUT */
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .about-intro { display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 1.25rem; }
+  .about-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent2); flex-shrink: 0; }
   .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
   .about-cards { display: flex; flex-direction: column; gap: 1rem; }
   .about-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
@@ -169,9 +171,12 @@
   <div class="section-line"></div>
   <div class="about-grid">
     <div class="about-text">
-      <p>I'm an aspiring Data Scientist with a strong foundation in Computer Science and a passion for creativity and innovation. Currently pursuing my Master's in Data Science at Northeastern University's Khoury College of Computer Sciences.</p>
+      <div class="about-intro">
+        <img src="images/profile.jpeg" alt="Rutuja Jadhav" class="about-photo" />
+        <p>I'm an aspiring Data Scientist with a strong foundation in Computer Science and a passion for creativity and innovation. Currently pursuing my Master's in Data Science at Northeastern University's Khoury College of Computer Sciences.</p>
+      </div>
       <p>Beyond the terminal, I'm drawn to the visual side of things — I love editorial design, doodling, and the craft of storytelling through layout and type. I'm particularly fascinated by fintech, consumer analytics, and predictive modeling, where data shapes how people experience products and brands.</p>
-      <div class="fun-fact"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Duolingo-color-icon.svg/32px-Duolingo-color-icon.svg.png" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;"><span>600+ day streak</span> in German 🇩🇪</div>
+      <div class="fun-fact"><img src="images/duolingo.png" style="width:20px;height:20px;vertical-align:middle;margin-right:8px;border-radius:4px;"><span>600+ day streak</span> in German 🇩🇪</div>
     </div>
     <div class="about-cards">
       <div class="about-card">
