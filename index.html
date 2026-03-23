@@ -4,461 +4,357 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Rutuja Jadhav</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111;
+  --ink:#f5f0eb;
+  --muted:#666;
+  --dim:#333;
+  --orange:#ff6b35;
+  --orange-glow:rgba(255,107,53,0.15);
+  --yellow:#ffd166;
+  --line:#1e1e1e;
+  --font:'DM Sans',sans-serif;
+  --display:'Syne',sans-serif;
+  --mono:'DM Mono',monospace;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI',system-ui,sans-serif;color:#e8edf8;cursor:default;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);overflow-x:hidden;}
 
-/* ─── GALLERY WORLD ─── */
-#world{position:fixed;inset:0;perspective:900px;perspective-origin:50% 50%;}
-#gallery{position:absolute;top:0;left:0;height:100%;display:flex;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.77,0,.18,1);}
+/* ── NAV ── */
+nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:200;background:rgba(10,10,10,0.8);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:100px;padding:.6rem 1.5rem;display:flex;align-items:center;gap:2rem;white-space:nowrap;}
+.n-logo{font-family:var(--display);font-size:.85rem;font-weight:700;color:var(--orange);}
+.n-links{display:flex;gap:1.5rem;list-style:none;}
+.n-links a{font-size:.72rem;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:500;}
+.n-links a:hover{color:var(--ink);}
 
-/* ─── ROOM ─── */
-.room{position:relative;width:100vw;height:100vh;flex-shrink:0;overflow:hidden;}
+/* ── HERO ── */
+#hero{min-height:100vh;padding:7rem 4rem 4rem;display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center;max-width:1200px;margin:0 auto;position:relative;}
 
-/* room anatomy */
-.r-ceiling{position:absolute;top:0;left:0;right:0;height:18vh;background:#030306;}
-.r-floor{position:absolute;bottom:0;left:0;right:0;height:22vh;background:#070710;}
-.r-wall-left{position:absolute;top:18vh;bottom:22vh;left:0;width:10vw;background:#050509;}
-.r-wall-right{position:absolute;top:18vh;bottom:22vh;right:0;width:10vw;background:#050509;}
-.r-wall-back{position:absolute;top:18vh;bottom:22vh;left:10vw;right:10vw;background:#080810;}
+.hero-label{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange-glow);border:1px solid rgba(255,107,53,0.3);border-radius:100px;padding:.35rem .9rem;font-size:.7rem;color:var(--orange);font-family:var(--mono);letter-spacing:.05em;margin-bottom:1.5rem;}
+.hero-label span{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pop 1.5s ease infinite;}
+@keyframes pop{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
 
-/* perspective corner lines */
-.room::before,.room::after{content:'';position:absolute;z-index:1;pointer-events:none;}
-/* ceiling-floor join lines */
-.r-corner-tl,.r-corner-tr,.r-corner-bl,.r-corner-br{position:absolute;z-index:2;pointer-events:none;background:#0f1e35;}
-.r-corner-tl{top:18vh;left:0;width:10vw;height:1px;}
-.r-corner-tr{top:18vh;right:0;width:10vw;height:1px;}
-.r-corner-bl{bottom:22vh;left:0;width:10vw;height:1px;}
-.r-corner-br{bottom:22vh;right:0;width:10vw;height:1px;}
+.hero-h1{font-family:var(--display);font-size:clamp(3.5rem,7vw,6rem);font-weight:800;line-height:1.0;letter-spacing:-.04em;margin-bottom:1.25rem;}
+.hero-h1 .name-line{display:block;}
+.hero-h1 .accent{color:var(--orange);position:relative;display:inline-block;}
+.hero-h1 .accent::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:4px;background:var(--orange);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .4s ease;animation:underlineIn .6s 1s forwards;}
+@keyframes underlineIn{to{transform:scaleX(1);}}
 
-/* perspective vanishing lines */
-.r-vlines{position:absolute;inset:0;z-index:2;pointer-events:none;}
-.r-vlines svg{width:100%;height:100%;}
+.hero-sub{font-size:1rem;color:var(--muted);line-height:1.75;max-width:400px;margin-bottom:2.5rem;font-weight:300;}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;border-radius:100px;font-size:.8rem;font-weight:500;text-decoration:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer;border:none;font-family:var(--font);}
+.btn:hover{transform:scale(1.06) translateY(-2px);}
+.btn-fill{background:var(--orange);color:#fff;box-shadow:0 4px 20px rgba(255,107,53,0.3);}
+.btn-fill:hover{box-shadow:0 8px 30px rgba(255,107,53,0.45);}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.btn-ghost:hover{background:var(--dim);border-color:var(--dim);}
 
-/* spotlight cone from ceiling centre */
-.r-spot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60vw;height:100%;z-index:3;pointer-events:none;background:radial-gradient(ellipse 30vw 55vh at 50% 0%,rgba(255,245,200,.09) 0%,transparent 65%);}
+/* hero right */
+.hero-right{display:flex;flex-direction:column;align-items:center;gap:1.5rem;}
+.hero-photo-wrap{position:relative;width:300px;}
+.hero-photo{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:24px;display:block;filter:contrast(1.05);}
+.hero-badge{position:absolute;top:-14px;right:-14px;background:var(--yellow);color:#000;border-radius:100px;padding:.5rem 1rem;font-family:var(--display);font-size:.72rem;font-weight:700;white-space:nowrap;transform:rotate(6deg);box-shadow:0 4px 16px rgba(255,209,102,0.3);}
+.hero-badge2{position:absolute;bottom:-14px;left:-14px;background:var(--orange);color:#fff;border-radius:100px;padding:.5rem 1rem;font-family:var(--display);font-size:.72rem;font-weight:700;white-space:nowrap;transform:rotate(-4deg);box-shadow:0 4px 16px rgba(255,107,53,0.3);}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;width:100%;}
+.stat-card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:1rem;text-align:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s;}
+.stat-card:hover{transform:translateY(-4px) scale(1.02);border-color:var(--orange);}
+.stat-n{font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--orange);}
+.stat-l{font-size:.62rem;color:var(--muted);margin-top:.15rem;font-family:var(--mono);}
 
-/* floor tiles */
-.r-tiles{position:absolute;bottom:0;left:0;right:0;height:22vh;z-index:2;pointer-events:none;overflow:hidden;}
-.r-tiles svg{width:100%;height:100%;}
+/* ── MARQUEE ── */
+.mq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:.65rem 0;background:var(--bg2);}
+.mq-inner{display:flex;animation:mq 25s linear infinite;white-space:nowrap;}
+.mq-inner span{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;padding:0 1.5rem;}
+.mq-inner .dot{color:var(--orange);}
 
-/* room content area */
-.r-content{position:absolute;top:18vh;bottom:22vh;left:10vw;right:10vw;z-index:5;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:2.5vh 2vw;scrollbar-width:thin;scrollbar-color:#1e3a5f #000;}
-.r-content::-webkit-scrollbar{width:3px;}
-.r-content::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:2px;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* wall sconce lights */
-.sconce{position:absolute;top:18vh;z-index:4;display:flex;flex-direction:column;align-items:center;pointer-events:none;}
-.sconce.left{left:3vw;}
-.sconce.right{right:3vw;}
-.sconce-bulb{width:8px;height:8px;border-radius:50%;background:#ffe8a0;box-shadow:0 0 12px 4px rgba(255,232,160,.35);}
-.sconce-beam{width:2px;height:40px;background:linear-gradient(to bottom,rgba(255,232,160,.15),transparent);}
+/* ── SECTIONS ── */
+.wrap{max-width:1100px;margin:0 auto;padding:6rem 4rem;}
 
-/* ─── NAV ─── */
-#nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:.75rem;align-items:center;}
-.nav-dot{width:8px;height:8px;border-radius:50%;border:1px solid #1e3a5f;cursor:pointer;transition:all .3s;}
-.nav-dot.active{background:#3b82f6;border-color:#3b82f6;box-shadow:0 0 8px rgba(59,130,246,.5);}
-.nav-dot:hover{border-color:#3b82f6;}
-.nav-arrow{width:32px;height:32px;border:1px solid #1e3a5f;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b8ab5;font-size:.9rem;transition:all .2s;background:rgba(0,0,0,.5);}
-.nav-arrow:hover{border-color:#3b82f6;color:#93c5fd;}
-.nav-room-label{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);z-index:100;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:#3b82f6;}
+.sec-eyebrow{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;}
+.sec-num{font-family:var(--mono);font-size:.65rem;color:var(--orange);letter-spacing:.1em;}
+.sec-line{flex:1;height:1px;background:var(--line);}
+.sec-title{font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:.75rem;}
+.sec-title .o{color:var(--orange);}
+.sec-sub{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:3rem;max-width:440px;font-weight:300;}
 
-/* ─── CONTENT STYLES ─── */
-.wall-content{width:100%;max-width:780px;}
+/* ── ABOUT ── */
+#about{background:var(--bg);}
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:2.5rem;align-items:start;}
+.about-quote{font-family:var(--display);font-size:1.3rem;font-weight:700;line-height:1.4;color:var(--ink);margin-bottom:1.25rem;letter-spacing:-.02em;}
+.about-body{font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:.85rem;font-weight:300;}
+.sticker-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
+.sticker{background:var(--bg2);border:1px solid var(--line);border-radius:100px;padding:.3rem .85rem;font-size:.72rem;color:var(--muted);transition:all .25s cubic-bezier(.34,1.56,.64,1);cursor:default;}
+.sticker:hover{background:var(--orange-glow);border-color:rgba(255,107,53,.4);color:var(--orange);transform:scale(1.08) rotate(-1deg);}
 
-/* big frame on wall */
-.frame{background:#040408;border:3px solid #181830;position:relative;padding:2rem 2.5rem;margin-bottom:2rem;border-radius:2px;}
-.frame::before{content:'';position:absolute;inset:-9px;border:1px solid #0c1222;border-radius:3px;pointer-events:none;}
-/* frame corner ornaments */
-.frame::after{content:'';position:absolute;inset:-14px;border:1px solid #090915;border-radius:4px;pointer-events:none;}
-.frame-label{position:absolute;bottom:-32px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#3b82f6;background:#000;padding:0 .5rem;}
+.about-sidebar{display:flex;flex-direction:column;gap:.75rem;}
+.about-fact{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:1rem 1.25rem;display:flex;align-items:center;gap:.85rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s;}
+.about-fact:hover{transform:translateX(6px);border-color:var(--orange);}
+.fact-icon{font-size:1.1rem;flex-shrink:0;}
+.fact-icon img{width:20px;height:20px;border-radius:4px;}
+.fact-label{font-size:.7rem;color:var(--muted);font-family:var(--mono);letter-spacing:.04em;margin-bottom:.1rem;}
+.fact-val{font-size:.82rem;color:var(--ink);font-weight:500;}
+.fact-val a{color:var(--orange);text-decoration:none;}
 
-/* placard style */
-.placard{background:#050510;border:1px solid #12122a;padding:1.1rem 1.4rem;margin-bottom:1.5rem;border-radius:1px;position:relative;}
-.placard-num{font-size:.58rem;color:#3b82f6;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.3rem;}
-.placard-title{font-size:.95rem;font-weight:700;margin-bottom:.1rem;}
-.placard-sub{font-size:.75rem;color:#6b8ab5;}
+/* ── SKILLS ── */
+#skills{background:var(--bg2);}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:.75rem;}
+.sk-card{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:1.25rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;}
+.sk-card:hover{transform:translateY(-6px) rotate(.5deg);border-color:var(--orange);box-shadow:0 12px 30px rgba(255,107,53,0.1);}
+.sk-num{font-family:var(--mono);font-size:.58rem;color:var(--orange);margin-bottom:.5rem;}
+.sk-name{font-family:var(--display);font-size:.9rem;font-weight:700;margin-bottom:.5rem;}
+.sk-val{font-size:.75rem;color:var(--muted);line-height:1.6;font-weight:300;}
 
-/* typography */
-.sec-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:.3rem;}
-.sec-line{width:32px;height:2px;background:linear-gradient(90deg,#1d4ed8,#3b82f6);margin-bottom:1.4rem;}
-p.body{color:#6b8ab5;font-size:.88rem;line-height:1.75;margin-bottom:.85rem;}
-.tag{display:inline-block;background:rgba(59,130,246,.1);color:#93c5fd;border:1px solid rgba(59,130,246,.18);padding:.2rem .6rem;border-radius:20px;font-size:.72rem;margin:.18rem .12rem;}
+/* ── PROJECTS ── */
+#projects{background:var(--bg);}
+.pj-grid{display:flex;flex-direction:column;gap:.75rem;}
+.pj-card{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:1.75rem;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;}
+.pj-card:hover{transform:translateY(-4px);border-color:var(--orange);box-shadow:0 12px 40px rgba(255,107,53,0.08);}
+.pj-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;}
+.pj-idx{font-family:var(--mono);font-size:.6rem;color:var(--orange);background:var(--orange-glow);padding:.2rem .5rem;border-radius:6px;}
+.pj-name{font-family:var(--display);font-size:1rem;font-weight:700;letter-spacing:-.02em;}
+.pj-date{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-bottom:.75rem;}
+.pj-desc{font-size:.8rem;color:var(--muted);line-height:1.7;padding-left:.9rem;font-weight:300;}
+.pj-desc li{margin-bottom:.18rem;}
+.pj-tags{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end;max-width:150px;}
+.ptag{background:var(--bg);border:1px solid var(--line);color:var(--muted);padding:.22rem .6rem;border-radius:100px;font-size:.65rem;white-space:nowrap;transition:all .2s;}
+.ptag:hover{border-color:var(--orange);color:var(--orange);}
 
-/* about entry */
-.about-hero{display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.5rem;}
-.about-photo{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid #1d4ed8;flex-shrink:0;}
-.fun-row{display:flex;align-items:center;gap:.55rem;padding:.45rem 0;border-bottom:1px solid #0a0a16;font-size:.84rem;color:#6b8ab5;}
-.fun-row:last-child{border-bottom:none;}
-.fun-row .hi{color:#93c5fd;font-weight:600;}
-.fun-row img{width:17px;height:17px;border-radius:3px;}
+/* ── EXPERIENCE ── */
+#experience{background:var(--bg2);}
+.exp-list{display:flex;flex-direction:column;gap:.75rem;}
+.exp-card{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:1.5rem 1.75rem;display:grid;grid-template-columns:160px 1fr;gap:1.5rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s;}
+.exp-card:hover{transform:translateX(6px);border-color:var(--orange);}
+.exp-meta{border-right:1px solid var(--line);padding-right:1.5rem;}
+.exp-date{font-family:var(--mono);font-size:.6rem;color:var(--orange);margin-bottom:.35rem;line-height:1.5;}
+.exp-org{font-size:.78rem;color:var(--muted);font-weight:300;}
+.exp-title{font-family:var(--display);font-size:.95rem;font-weight:700;margin-bottom:.3rem;letter-spacing:-.01em;}
+.exp-body{font-size:.78rem;color:var(--muted);line-height:1.7;font-weight:300;}
+.exp-body li{margin-left:.9rem;margin-bottom:.15rem;}
 
-/* skills */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:.85rem;}
-.skill-card{background:#040410;border:1px solid #0d1228;border-radius:6px;padding:.9rem 1rem;}
-.skill-card h4{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:#3b82f6;margin-bottom:.45rem;}
-.skill-card p{color:#6b8ab5;font-size:.8rem;}
+/* ── ACTIVITIES ── */
+#activities{background:var(--bg);}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.75rem;}
+.act-card{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:1.4rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s;}
+.act-card:hover{transform:translateY(-5px) rotate(-.5deg);border-color:var(--orange);}
+.act-title{font-family:var(--display);font-size:.9rem;font-weight:700;margin-bottom:.2rem;letter-spacing:-.01em;}
+.act-date{font-family:var(--mono);font-size:.58rem;color:var(--orange);margin-bottom:.25rem;}
+.act-org{font-size:.75rem;color:var(--muted);margin-bottom:.5rem;}
+.act-body{font-size:.77rem;color:var(--muted);line-height:1.65;font-weight:300;}
+a.act-link{font-family:var(--mono);color:var(--muted);font-size:.65rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;transition:color .2s;}
+a.act-link:hover{color:var(--orange);}
 
-/* projects */
-.proj-rail{display:flex;gap:1rem;overflow-x:auto;padding-bottom:.5rem;cursor:grab;scrollbar-width:none;}
-.proj-rail::-webkit-scrollbar{display:none;}
-.proj-card{min-width:260px;max-width:260px;background:#040410;border:1px solid #0d1228;border-radius:6px;padding:1.1rem;flex-shrink:0;transition:border-color .2s;}
-.proj-card:hover{border-color:#1d4ed8;}
-.proj-title{font-weight:700;font-size:.85rem;margin-bottom:.2rem;}
-.proj-date{color:#6b8ab5;font-size:.68rem;margin-bottom:.55rem;}
-.proj-desc{color:#6b8ab5;font-size:.77rem;margin-bottom:.7rem;padding-left:.85rem;}
-.proj-desc li{margin-bottom:.2rem;}
-.proj-tags{display:flex;flex-wrap:wrap;gap:.28rem;}
-.proj-tag{background:rgba(29,78,216,.08);color:#6b8ab5;border:1px solid #0d1228;padding:.13rem .45rem;border-radius:3px;font-size:.68rem;}
+/* ── CONTACT ── */
+#contact{background:var(--bg2);overflow:hidden;position:relative;}
+.ct-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 100%,rgba(255,107,53,0.06),transparent);pointer-events:none;}
+.ct-inner{position:relative;z-index:1;text-align:center;}
+.ct-title{font-family:var(--display);font-size:clamp(3rem,8vw,6.5rem);font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:2.5rem;}
+.ct-title .o{color:var(--orange);}
+.ct-title .dim{color:var(--dim);}
+.ct-links{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+.ct-btn{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1.5rem;border:1px solid var(--line);border-radius:100px;font-size:.8rem;color:var(--muted);text-decoration:none;background:var(--bg);transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.ct-btn:hover{transform:scale(1.06) translateY(-2px);border-color:var(--orange);color:var(--orange);background:var(--orange-glow);}
+.ct-btn svg{width:15px;height:15px;fill:currentColor;}
 
-/* timeline */
-.tl{display:flex;flex-direction:column;}
-.tl-item{display:grid;grid-template-columns:110px 1fr;gap:1rem;padding-bottom:1.3rem;position:relative;}
-.tl-item:not(:last-child)::before{content:'';position:absolute;left:109px;top:6px;bottom:0;width:1px;background:#0d1228;}
-.tl-dot{position:absolute;left:104px;top:5px;width:11px;height:11px;border-radius:50%;background:#1d4ed8;border:2px solid #000;}
-.tl-date{color:#6b8ab5;font-size:.72rem;text-align:right;padding-top:.1rem;}
-.tl-content h4{font-weight:700;font-size:.85rem;margin-bottom:.1rem;}
-.tl-content .org{color:#3b82f6;font-size:.77rem;margin-bottom:.3rem;}
-.tl-content p,.tl-content li{color:#6b8ab5;font-size:.78rem;}
-.tl-content ul{margin-left:.9rem;}
-.tl-content li{margin-bottom:.18rem;}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--line);padding:1.5rem 4rem;display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;color:var(--muted);}
 
-/* extra */
-.extra{background:#040410;border:1px solid #0d1228;border-radius:4px;padding:.9rem 1.1rem;margin-bottom:.7rem;}
-.extra-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.2rem;}
-.extra-title{font-weight:700;font-size:.83rem;}
-.extra-date{color:#6b8ab5;font-size:.68rem;white-space:nowrap;margin-left:.5rem;}
-.extra-org{color:#3b82f6;font-size:.75rem;margin-bottom:.28rem;}
-.extra-desc{color:#6b8ab5;font-size:.77rem;}
-.extra-link{color:#3b82f6;font-size:.75rem;text-decoration:none;display:inline-block;margin-top:.28rem;}
-.extra-link:hover{color:#93c5fd;}
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}.d5{transition-delay:.4s;}
+.hero-anim{animation:heroIn .7s both;}
+.h1{animation-delay:.1s;}.h2{animation-delay:.25s;}.h3{animation-delay:.4s;}.h4{animation-delay:.55s;}.h5{animation-delay:.7s;}
+@keyframes heroIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
 
-/* contact */
-.c-row{display:flex;gap:1.1rem;justify-content:center;margin-top:1.5rem;}
-.c-btn{width:50px;height:50px;border:1px solid #1e3a5f;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s,transform .2s;}
-.c-btn:hover{border-color:#3b82f6;transform:translateY(-3px);}
-.c-btn svg{width:21px;height:21px;fill:#6b8ab5;transition:fill .2s;}
-.c-btn:hover svg{fill:#93c5fd;}
-
-/* ─── ENTRANCE SCREEN ─── */
-#entrance{position:fixed;inset:0;z-index:200;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease;}
-#entrance.out{opacity:0;pointer-events:none;}
-.ent-vlines{position:absolute;inset:0;pointer-events:none;}
-.ent-spot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:100%;background:radial-gradient(ellipse 300px 600px at 50% 0%,rgba(255,245,200,.07) 0%,transparent 65%);pointer-events:none;}
-.ent-floor{position:absolute;bottom:0;left:0;right:0;height:35%;background:#060610;overflow:hidden;}
-.ent-floor svg{width:100%;height:100%;}
-.ent-ceiling{position:absolute;top:0;left:0;right:0;height:20%;background:#030305;}
-.ent-photo-wrap{position:relative;z-index:2;width:160px;height:160px;border-radius:50%;border:3px solid #1d4ed8;overflow:hidden;box-shadow:0 0 40px rgba(59,130,246,.2);margin-bottom:1.8rem;}
-.ent-photo-wrap img{width:100%;height:100%;object-fit:cover;}
-.ent-name{position:relative;z-index:2;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:.06em;text-align:center;margin-bottom:.4rem;}
-.ent-name span{background:linear-gradient(135deg,#3b82f6,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.ent-tagline{position:relative;z-index:2;font-size:.8rem;color:#6b8ab5;letter-spacing:.25em;text-transform:uppercase;text-align:center;margin-bottom:.3rem;}
-.ent-meta{position:relative;z-index:2;font-size:.72rem;color:#3b82f6;letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:2.5rem;}
-.ent-enter{position:relative;z-index:2;background:transparent;border:1px solid #1e3a5f;color:#93c5fd;padding:.65rem 2rem;border-radius:4px;font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.ent-enter:hover{border-color:#3b82f6;background:rgba(59,130,246,.06);box-shadow:0 0 20px rgba(59,130,246,.15);}
-.ent-placard{position:relative;z-index:2;margin-top:2rem;border:1px solid #0f1e35;padding:.7rem 1.4rem;text-align:center;font-size:.65rem;color:#1e3a5f;letter-spacing:.12em;text-transform:uppercase;}
-
-/* swipe hint */
-#hint{position:fixed;top:1.5rem;right:1.5rem;z-index:100;font-size:.62rem;color:#1e3a5f;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:.4rem;}
+@media(max-width:768px){
+  nav{padding:.5rem 1rem;gap:1rem;}.n-links{display:none;}
+  #hero{grid-template-columns:1fr;padding:5rem 1.5rem 3rem;gap:2rem;}
+  .hero-right{display:none;}
+  .wrap{padding:5rem 1.5rem;}
+  .about-grid{grid-template-columns:1fr;}
+  .pj-card{grid-template-columns:1fr;}
+  .pj-tags{display:none;}
+  .exp-card{grid-template-columns:1fr;}
+  .exp-meta{border-right:none;border-bottom:1px solid var(--line);padding-right:0;padding-bottom:1rem;}
+  footer{flex-direction:column;gap:.4rem;padding:1.5rem;}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ ENTRANCE ═══ -->
-<div id="entrance">
-  <div class="ent-ceiling"></div>
-  <div class="ent-spot"></div>
-  <div class="ent-floor">
-    <svg viewBox="0 0 100 35" preserveAspectRatio="none">
-      <defs><pattern id="fp" x="0" y="0" width="10" height="5" patternUnits="userSpaceOnUse">
-        <polygon points="5,0 10,2.5 5,5 0,2.5" fill="none" stroke="#0c1426" stroke-width=".25"/>
-      </pattern></defs>
-      <rect width="100" height="35" fill="url(#fp)"/>
-    </svg>
+<nav>
+  <div class="n-logo">RJ ✦</div>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1200px;margin:0 auto;">
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-label hero-anim h1"><span></span>Open to opportunities</div>
+    <h1 class="hero-h1 hero-anim h2">
+      <span class="name-line">Data</span>
+      <span class="name-line"><span class="accent">Scientist</span></span>
+      <span class="name-line" style="color:var(--muted)">& Creator.</span>
+    </h1>
+    <p class="hero-sub hero-anim h3">Hi, I'm Rutuja — I build ML models, edit magazines, play badminton, and am somehow on a 600+ day Duolingo streak. Based in Boston, MA.</p>
+    <div class="hero-btns hero-anim h4">
+      <a href="#projects" class="btn btn-fill">See my work →</a>
+      <a href="#contact" class="btn btn-ghost">Say hello</a>
+    </div>
   </div>
-  <svg class="ent-vlines" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <line x1="0" y1="0" x2="50" y2="65" stroke="#0a1020" stroke-width=".3"/>
-    <line x1="100" y1="0" x2="50" y2="65" stroke="#0a1020" stroke-width=".3"/>
-    <line x1="0" y1="100" x2="50" y2="65" stroke="#0a1020" stroke-width=".3"/>
-    <line x1="100" y1="100" x2="50" y2="65" stroke="#0a1020" stroke-width=".3"/>
-    <line x1="0" y1="20" x2="50" y2="65" stroke="#080e1a" stroke-width=".2"/>
-    <line x1="100" y1="20" x2="50" y2="65" stroke="#080e1a" stroke-width=".2"/>
-    <line x1="0" y1="80" x2="50" y2="65" stroke="#080e1a" stroke-width=".2"/>
-    <line x1="100" y1="80" x2="50" y2="65" stroke="#080e1a" stroke-width=".2"/>
-  </svg>
-  <div class="ent-photo-wrap"><img src="images/profile.jpeg" alt="Rutuja Jadhav"/></div>
-  <div class="ent-name"><span>Rutuja Jadhav</span></div>
-  <div class="ent-tagline">Data Scientist · Creative · Builder</div>
-  <div class="ent-meta">A Solo Exhibition &nbsp;·&nbsp; 2026</div>
-  <button class="ent-enter" onclick="enterGallery()">Enter Gallery &nbsp;→</button>
-  <div class="ent-placard">MS Data Science · Northeastern University · Boston, MA</div>
+  <div class="hero-right hero-anim h5">
+    <div class="hero-photo-wrap">
+      <img src="images/profile.jpeg" class="hero-photo" alt="Rutuja Jadhav"/>
+      <div class="hero-badge">MS Data Science 🎓</div>
+      <div class="hero-badge2">Northeastern Univ.</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><div class="stat-n">3.66</div><div class="stat-l">GPA</div></div>
+      <div class="stat-card"><div class="stat-n">600+</div><div class="stat-l">Duo Days</div></div>
+      <div class="stat-card"><div class="stat-n">5+</div><div class="stat-l">Projects</div></div>
+    </div>
+  </div>
+</section>
 </div>
 
-<!-- ═══ GALLERY ═══ -->
-<div id="world">
-  <div id="gallery">
-
-    <!-- ── ROOM 1: ABOUT ── -->
-    <div class="room" id="r0">
-      <div class="r-ceiling"></div>
-      <div class="r-wall-left"></div><div class="r-wall-right"></div>
-      <div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div>
-      <div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/>
-        <line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/>
-      </svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none">
-        <defs><pattern id="tp1" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse">
-          <polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/>
-        </pattern></defs>
-        <rect width="100" height="22" fill="url(#tp1)"/>
-      </svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content">
-          <div class="frame" style="margin-bottom:2.5rem;">
-            <div class="frame-label">I — Artist Statement</div>
-            <div class="about-hero">
-              <img src="images/profile.jpeg" class="about-photo" alt="Rutuja"/>
-              <div>
-                <div class="sec-title">Rutuja Jadhav</div>
-                <div class="sec-line"></div>
-                <p class="body">Aspiring Data Scientist with a foundation in Computer Science and a passion for creativity. Currently pursuing an MS in Data Science at Northeastern University's Khoury College.</p>
-                <p class="body">Fascinated by fintech, consumer analytics, and predictive modeling — where data shapes how people experience products. Also drawn to editorial design, doodling, and media.</p>
-              </div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
-            <div class="placard">
-              <div class="placard-num">Exhibit 1.1 — Interests</div>
-              <div style="margin-top:.5rem;">
-                <span class="tag">Machine Learning</span><span class="tag">Predictive Analytics</span><span class="tag">Consumer Analytics</span><span class="tag">Fintech</span><span class="tag">NLP</span><span class="tag">Computer Vision</span><span class="tag">Editorial Design</span><span class="tag">Media</span>
-              </div>
-            </div>
-            <div class="placard">
-              <div class="placard-num">Exhibit 1.2 — About</div>
-              <div style="margin-top:.4rem;">
-                <div class="fun-row"><img src="images/duolingo.png" alt="Duo"/><span><span class="hi">600+ day</span> streak · German</span></div>
-                <div class="fun-row"><span style="font-size:14px">🏸</span><span>Badminton player</span></div>
-                <div class="fun-row"><span style="font-size:14px">🎤</span><span>MUN delegate</span></div>
-                <div class="fun-row"><span style="font-size:14px">✏️</span><span>Doodling &amp; editorial design</span></div>
-                <div class="fun-row"><span style="font-size:14px">📖</span><a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="extra-link">Colloque Magazine</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROOM 2: SKILLS ── -->
-    <div class="room" id="r1">
-      <div class="r-ceiling"></div><div class="r-wall-left"></div><div class="r-wall-right"></div><div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div><div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/>
-        <line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/>
-        <line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/>
-      </svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none"><defs><pattern id="tp2" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse"><polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/></pattern></defs><rect width="100" height="22" fill="url(#tp2)"/></svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content">
-          <div class="frame">
-            <div class="frame-label">II — Technical Catalogue</div>
-            <div class="sec-title">Skills</div>
-            <div class="sec-line"></div>
-            <div class="skills-grid">
-              <div class="skill-card"><h4>Languages</h4><p>Python, SQL, R, Java, HTML, CSS</p></div>
-              <div class="skill-card"><h4>ML / AI</h4><p>Sklearn, TensorFlow, Keras, SVM, Random Forest, PCA, Neural Networks, Apriori</p></div>
-              <div class="skill-card"><h4>Libraries</h4><p>NumPy, Pandas, Matplotlib, Seaborn, OpenCV, Imblearn, PySpark</p></div>
-              <div class="skill-card"><h4>Databases</h4><p>MySQL, SQLite, Oracle DB XE — ERD, normalization, stored procedures</p></div>
-              <div class="skill-card"><h4>Tools</h4><p>Jupyter, Tableau, MS Excel, Weka, Android Studio, LabelImg, Kali Linux</p></div>
-              <div class="skill-card"><h4>Data Modeling</h4><p>UML, Entity-Relationship Diagrams, logical &amp; physical modeling</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROOM 3: PROJECTS ── -->
-    <div class="room" id="r2">
-      <div class="r-ceiling"></div><div class="r-wall-left"></div><div class="r-wall-right"></div><div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div><div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/><line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/></svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none"><defs><pattern id="tp3" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse"><polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/></pattern></defs><rect width="100" height="22" fill="url(#tp3)"/></svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content">
-          <div class="placard" style="margin-bottom:1.5rem;">
-            <div class="placard-num">Room III — Selected Works</div>
-            <div class="placard-title">Projects</div>
-            <div class="placard-sub">Drag rail to explore →</div>
-          </div>
-          <div class="proj-rail" id="pr">
-            <div class="proj-card"><div class="proj-title">Restaurant Visits Database</div><div class="proj-date">Mar 2026</div><ul class="proj-desc"><li>Normalized 8-table MySQL schema (3NF) with full ERD</li><li>Automated DB &amp; bulk CSV loading via R on Aiven</li><li>Stored procedures with integrity checks</li><li>R Markdown analytics report</li></ul><div class="proj-tags"><span class="proj-tag">MySQL</span><span class="proj-tag">R</span><span class="proj-tag">SQLite</span><span class="proj-tag">ETL</span></div></div>
-            <div class="proj-card"><div class="proj-title">E-Commerce Recommendations</div><div class="proj-date">Dec 2025</div><ul class="proj-desc"><li>Apriori + DistilBERT on 38K+ transactions</li><li>End-to-end NLP pipeline across 167 categories</li><li>70.5% positive sentiment; lift up to 1.62</li><li>Streamlit dashboard for stakeholders</li></ul><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">NLP</span><span class="proj-tag">DistilBERT</span><span class="proj-tag">Streamlit</span></div></div>
-            <div class="proj-card"><div class="proj-title">Breast Tumor Bed Estimation</div><div class="proj-date">Nov 2023 – Jun 2025</div><ul class="proj-desc"><li>Led team of 6 with Nanavati Max Hospital</li><li>AI model to auto-segment tumor beds</li><li>Managed full data collection pipeline</li></ul><div class="proj-tags"><span class="proj-tag">Deep Learning</span><span class="proj-tag">Medical Imaging</span><span class="proj-tag">Research</span></div></div>
-            <div class="proj-card"><div class="proj-title">Deepfake Audio Detection</div><div class="proj-date">Jun – Nov 2024</div><ul class="proj-desc"><li>13,000+ files via image-based conversion</li><li>TCN, GRU, EfficientNet on Mel &amp; MFCC</li><li>EfficientNet dual input → 99.62% accuracy</li></ul><div class="proj-tags"><span class="proj-tag">EfficientNet</span><span class="proj-tag">GRU</span><span class="proj-tag">Audio ML</span></div></div>
-            <div class="proj-card"><div class="proj-title">Password Strength Classifier</div><div class="proj-date">Mar 2023</div><ul class="proj-desc"><li>SVM, KNN, Random Forest with engineered features</li><li>SVM → 99.98% accuracy</li></ul><div class="proj-tags"><span class="proj-tag">SVM</span><span class="proj-tag">KNN</span><span class="proj-tag">scikit-learn</span></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROOM 4: EXPERIENCE ── -->
-    <div class="room" id="r3">
-      <div class="r-ceiling"></div><div class="r-wall-left"></div><div class="r-wall-right"></div><div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div><div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/><line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/></svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none"><defs><pattern id="tp4" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse"><polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/></pattern></defs><rect width="100" height="22" fill="url(#tp4)"/></svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content">
-          <div class="frame">
-            <div class="frame-label">IV — Provenance</div>
-            <div class="sec-title">Experience &amp; Education</div>
-            <div class="sec-line"></div>
-            <div class="tl">
-              <div class="tl-item"><div class="tl-dot"></div><span class="tl-date">Sep 2025 – May 2027</span><div class="tl-content"><h4>MS in Data Science</h4><div class="org">Northeastern University — Khoury College, Boston</div><p>CGPA: 3.66/4.0 · Database Management, Machine Learning</p></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><span class="tl-date">Jul – Aug 2025</span><div class="tl-content"><h4>Audit Intern, ITDA</h4><div class="org">Deloitte</div><ul><li>IT audits focused on SOC 1 &amp; SOC 2 reports</li><li>Sampling, planning &amp; summary memos</li></ul></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><span class="tl-date">May – Jul 2024</span><div class="tl-content"><h4>Data Science Intern</h4><div class="org">Grok Learning</div><ul><li>Sentiment analysis NN on IMDB — 87.71% accuracy</li><li>Car logo detection (ssd-mobilenet-v2), 57.2% mAP on Pi</li><li>Waste segmentation model → 96.8% accuracy</li></ul></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><span class="tl-date">Aug 2021 – May 2025</span><div class="tl-content"><h4>BTech CSE — Cyber Security</h4><div class="org">NMIMS — MPSTME, Mumbai</div><p>CGPA: 3.70/4.0</p></div></div>
-            </div>
-            <a href="#" style="display:inline-block;margin-top:.8rem;padding:.5rem 1.1rem;border:1px solid #1e3a5f;border-radius:4px;color:#93c5fd;text-decoration:none;font-size:.78rem;">📄 Download Resume</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROOM 5: ACTIVITIES ── -->
-    <div class="room" id="r4">
-      <div class="r-ceiling"></div><div class="r-wall-left"></div><div class="r-wall-right"></div><div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div><div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/><line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/></svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none"><defs><pattern id="tp5" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse"><polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/></pattern></defs><rect width="100" height="22" fill="url(#tp5)"/></svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content">
-          <div class="placard" style="margin-bottom:1.2rem;"><div class="placard-num">Room V</div><div class="placard-title">Activities &amp; Leadership</div></div>
-          <div class="extra"><div class="extra-hdr"><span class="extra-title">Senator for External Affairs</span><span class="extra-date">Feb 2026 – Present</span></div><div class="extra-org">Graduate Student Council, Northeastern University</div></div>
-          <div class="extra"><div class="extra-hdr"><span class="extra-title">Editor in Chief — Colloque Magazine</span><span class="extra-date">Jan – Jun 2023</span></div><div class="extra-org">MPSTME</div><p class="extra-desc">Founded and led a business magazine — editorial calendar, layout design, college team interviews.</p><a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="extra-link">Read Colloque 2023 ↗</a></div>
-          <div class="extra"><div class="extra-hdr"><span class="extra-title">MUN Delegate</span><span class="extra-date">2021 – 2024</span></div><div class="extra-org">Multiple Conferences</div><p class="extra-desc">Represented countries on global policy — research, public speaking, negotiation.</p></div>
-          <div class="extra"><div class="extra-hdr"><span class="extra-title">Joint Secretary</span><span class="extra-date">Jun 2022 – May 2023</span></div><div class="extra-org">Students' Council Business &amp; Management Cell, MPSTME</div><p class="extra-desc">Led 40+ executives; participation +70%, online reach +20%.</p></div>
-          <div class="extra"><div class="extra-hdr"><span class="extra-title">Teaching Volunteer</span><span class="extra-date">May – Jun 2022</span></div><div class="extra-org">Spark-A-Change Foundation</div><p class="extra-desc">60+ hours tutoring underprivileged students in Science, Math, and English.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ROOM 6: CONTACT ── -->
-    <div class="room" id="r5">
-      <div class="r-ceiling"></div><div class="r-wall-left"></div><div class="r-wall-right"></div><div class="r-wall-back"></div>
-      <div class="r-corner-tl"></div><div class="r-corner-tr"></div><div class="r-corner-bl"></div><div class="r-corner-br"></div>
-      <div class="r-vlines"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="10" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="18" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="90" y1="78" x2="50" y2="50" stroke="#0c1830" stroke-width=".3"/><line x1="10" y1="18" x2="10" y2="78" stroke="#0a1020" stroke-width=".4"/><line x1="90" y1="18" x2="90" y2="78" stroke="#0a1020" stroke-width=".4"/></svg></div>
-      <div class="r-spot"></div>
-      <div class="r-tiles"><svg viewBox="0 0 100 22" preserveAspectRatio="none"><defs><pattern id="tp6" x="0" y="0" width="12" height="6" patternUnits="userSpaceOnUse"><polygon points="6,0 12,3 6,6 0,3" fill="none" stroke="#0c1426" stroke-width=".3"/></pattern></defs><rect width="100" height="22" fill="url(#tp6)"/></svg></div>
-      <div class="sconce left"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="sconce right"><div class="sconce-bulb"></div><div class="sconce-beam"></div></div>
-      <div class="r-content">
-        <div class="wall-content" style="text-align:center;">
-          <div class="frame" style="display:inline-block;text-align:left;min-width:320px;">
-            <div class="frame-label">VI — Visitor's Book</div>
-            <div class="sec-title" style="text-align:center;">Let's Connect</div>
-            <div class="sec-line" style="margin:0 auto 1.2rem;"></div>
-            <p class="body" style="text-align:center;max-width:380px;margin:0 auto .8rem;">Open to internships, full-time roles, and interesting collaborations.</p>
-            <div class="c-row">
-              <a href="mailto:rutujasjadhav9@gmail.com" class="c-btn" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-              <a href="https://linkedin.com/in/rutuja-jadhav9" target="_blank" class="c-btn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-              <a href="https://github.com/rutujasjadhav" target="_blank" class="c-btn" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-inner">
+    <span>Machine Learning</span><span class="dot">✦</span><span>Data Science</span><span class="dot">✦</span><span>NLP</span><span class="dot">✦</span><span>Fintech</span><span class="dot">✦</span><span>Computer Vision</span><span class="dot">✦</span><span>Editorial Design</span><span class="dot">✦</span><span>Predictive Analytics</span><span class="dot">✦</span><span>Consumer Tech</span><span class="dot">✦</span><span>MUN Delegate</span><span class="dot">✦</span><span>Badminton 🏸</span><span class="dot">✦</span>
+    <span>Machine Learning</span><span class="dot">✦</span><span>Data Science</span><span class="dot">✦</span><span>NLP</span><span class="dot">✦</span><span>Fintech</span><span class="dot">✦</span><span>Computer Vision</span><span class="dot">✦</span><span>Editorial Design</span><span class="dot">✦</span><span>Predictive Analytics</span><span class="dot">✦</span><span>Consumer Tech</span><span class="dot">✦</span><span>MUN Delegate</span><span class="dot">✦</span><span>Badminton 🏸</span><span class="dot">✦</span>
   </div>
 </div>
 
-<!-- nav -->
-<div id="nav" style="display:none;">
-  <div class="nav-arrow" onclick="go(-1)">&#8592;</div>
-  <div class="nav-dot active" onclick="goTo(0)"></div>
-  <div class="nav-dot" onclick="goTo(1)"></div>
-  <div class="nav-dot" onclick="goTo(2)"></div>
-  <div class="nav-dot" onclick="goTo(3)"></div>
-  <div class="nav-dot" onclick="goTo(4)"></div>
-  <div class="nav-dot" onclick="goTo(5)"></div>
-  <div class="nav-arrow" onclick="go(1)">&#8594;</div>
-</div>
-<div class="nav-room-label" id="rlabel" style="display:none;"></div>
-<div id="hint" style="display:none;">← → navigate</div>
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="sec-eyebrow rv"><span class="sec-num">01 — ABOUT</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv d1">The person<br/>behind the <span class="o">data.</span></h2>
+    <div class="about-grid">
+      <div class="rv d2">
+        <p class="about-quote">"I build things with data — and occasionally with pencils."</p>
+        <p class="about-body">Aspiring Data Scientist with a strong foundation in Computer Science, currently pursuing my Master's at Northeastern University's Khoury College. I'm passionate about fintech, consumer analytics, and predictive modeling — where data shapes how people experience products.</p>
+        <p class="about-body">Beyond the terminal, I love editorial design, doodling, and media. I've co-founded a business magazine, debated global policy at MUN, and somehow maintain a 600+ day Duolingo streak in German.</p>
+        <div class="sticker-row">
+          <span class="sticker">Machine Learning</span><span class="sticker">Predictive Analytics</span><span class="sticker">Fintech</span><span class="sticker">Consumer Analytics</span><span class="sticker">NLP</span><span class="sticker">Computer Vision</span><span class="sticker">Editorial Design</span><span class="sticker">Media &amp; Publishing</span>
+        </div>
+      </div>
+      <div class="about-sidebar rv d3">
+        <div class="about-fact"><span class="fact-icon"><img src="images/profile.jpeg" alt="me" style="width:32px;height:32px;border-radius:50%;object-fit:cover;"/></span><div><div class="fact-label">Who</div><div class="fact-val">Rutuja Jadhav, Boston MA</div></div></div>
+        <div class="about-fact"><span class="fact-icon">🎓</span><div><div class="fact-label">Studying</div><div class="fact-val">MS Data Science @ Northeastern</div></div></div>
+        <div class="about-fact"><span class="fact-icon">🏛️</span><div><div class="fact-label">Role</div><div class="fact-val">GSC Senator</div></div></div>
+        <div class="about-fact"><span class="fact-icon"><img src="images/duolingo.png" alt="duo"/></span><div><div class="fact-label">Streak</div><div class="fact-val">600+ days in German 🇩🇪</div></div></div>
+        <div class="about-fact"><span class="fact-icon">🏸</span><div><div class="fact-label">Sport</div><div class="fact-val">Badminton player</div></div></div>
+        <div class="about-fact"><span class="fact-icon">🎤</span><div><div class="fact-label">Activity</div><div class="fact-val">MUN Delegate (2021–2024)</div></div></div>
+        <div class="about-fact"><span class="fact-icon">📖</span><div><div class="fact-label">Magazine</div><div class="fact-val"><a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank">Colloque 2023 ↗</a></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-eyebrow rv"><span class="sec-num">02 — SKILLS</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv d1">Technical <span class="o">stack.</span></h2>
+    <p class="sec-sub rv d2">Languages, frameworks, and tools I work with.</p>
+    <div class="sk-grid">
+      <div class="sk-card rv d1"><div class="sk-num">01</div><div class="sk-name">Languages</div><div class="sk-val">Python, SQL, R, Java, HTML, CSS</div></div>
+      <div class="sk-card rv d2"><div class="sk-num">02</div><div class="sk-name">ML / AI</div><div class="sk-val">Sklearn, TensorFlow, Keras, SVM, Random Forest, PCA, Neural Nets, Apriori</div></div>
+      <div class="sk-card rv d3"><div class="sk-num">03</div><div class="sk-name">Libraries</div><div class="sk-val">NumPy, Pandas, Matplotlib, Seaborn, OpenCV, Imblearn, PySpark</div></div>
+      <div class="sk-card rv d4"><div class="sk-num">04</div><div class="sk-name">Databases</div><div class="sk-val">MySQL, SQLite, Oracle DB — ERD, normalization, stored procedures</div></div>
+      <div class="sk-card rv d5"><div class="sk-num">05</div><div class="sk-name">Tools</div><div class="sk-val">Jupyter, Tableau, Excel, Weka, Android Studio, LabelImg, Kali Linux</div></div>
+      <div class="sk-card rv d3"><div class="sk-num">06</div><div class="sk-name">Data Modeling</div><div class="sk-val">UML, Entity-Relationship Diagrams, logical &amp; physical modeling</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-eyebrow rv"><span class="sec-num">03 — PROJECTS</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv d1">Selected <span class="o">work.</span></h2>
+    <p class="sec-sub rv d2">Things I've built and researched.</p>
+    <div class="pj-grid">
+      <div class="pj-card rv d1"><div><div class="pj-top"><span class="pj-idx">01</span><div class="pj-name">Restaurant Visits Database System</div></div><div class="pj-date">MAR 2026</div><ul class="pj-desc"><li>Normalized 8-table MySQL schema (3NF) with full ERD design</li><li>Automated DB creation &amp; bulk CSV loading via R on Aiven MySQL</li><li>Stored procedures with integrity checks and R-side test harnesses</li><li>R Markdown analytics report surfacing business insights</li></ul></div><div class="pj-tags"><span class="ptag">MySQL</span><span class="ptag">R</span><span class="ptag">SQLite</span><span class="ptag">ETL</span></div></div>
+      <div class="pj-card rv d2"><div><div class="pj-top"><span class="pj-idx">02</span><div class="pj-name">E-Commerce Recommendation System</div></div><div class="pj-date">DEC 2025</div><ul class="pj-desc"><li>Apriori + DistilBERT on 38K+ transactions and 4K+ reviews</li><li>End-to-end pipeline: SQLite, ETL, NLP across 167 categories</li><li>70.5% positive sentiment; high-lift product pairs up to 1.62</li><li>Interactive Streamlit dashboard for stakeholders</li></ul></div><div class="pj-tags"><span class="ptag">Python</span><span class="ptag">NLP</span><span class="ptag">DistilBERT</span><span class="ptag">Streamlit</span></div></div>
+      <div class="pj-card rv d3"><div><div class="pj-top"><span class="pj-idx">03</span><div class="pj-name">Breast Tumor Bed Volume Estimation</div></div><div class="pj-date">NOV 2023 – JUN 2025</div><ul class="pj-desc"><li>Led team of 6 with Nanavati Max Super Speciality Hospital, Mumbai</li><li>AI model to auto-segment tumor beds using surgical clips &amp; pre-surgical scans</li><li>Managed full data collection and literature review pipeline</li></ul></div><div class="pj-tags"><span class="ptag">Deep Learning</span><span class="ptag">Medical Imaging</span><span class="ptag">Research</span></div></div>
+      <div class="pj-card rv d4"><div><div class="pj-top"><span class="pj-idx">04</span><div class="pj-name">Deepfake Audio Detection</div></div><div class="pj-date">JUN – NOV 2024</div><ul class="pj-desc"><li>13,000+ audio files via image-based conversion (STFT, Mel, MFCC)</li><li>EfficientNet with dual input → 99.62% accuracy</li></ul></div><div class="pj-tags"><span class="ptag">EfficientNet</span><span class="ptag">GRU</span><span class="ptag">Audio ML</span></div></div>
+      <div class="pj-card rv d5"><div><div class="pj-top"><span class="pj-idx">05</span><div class="pj-name">Password Strength Classifier</div></div><div class="pj-date">MAR 2023</div><ul class="pj-desc"><li>SVM, KNN, Random Forest with 6 engineered features</li><li>SVM → 99.98% accuracy; handled class imbalance via under-sampling</li></ul></div><div class="pj-tags"><span class="ptag">SVM</span><span class="ptag">KNN</span><span class="ptag">scikit-learn</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-eyebrow rv"><span class="sec-num">04 — EXPERIENCE</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv d1">Where I've <span class="o">been.</span></h2>
+    <p class="sec-sub rv d2">Education and work experience.</p>
+    <div class="exp-list">
+      <div class="exp-card rv d1"><div class="exp-meta"><div class="exp-date">SEP 2025 – MAY 2027</div><div class="exp-org">Northeastern University</div></div><div><div class="exp-title">MS in Data Science</div><div class="exp-body">CGPA: 3.66/4.0 · Khoury College · DB Management Systems, Machine Learning</div></div></div>
+      <div class="exp-card rv d2"><div class="exp-meta"><div class="exp-date">JUL – AUG 2025</div><div class="exp-org">Deloitte</div></div><div><div class="exp-title">Audit Intern, ITDA</div><ul class="exp-body"><li>IT audit engagements focused on SOC 1 &amp; SOC 2 reports</li><li>Sampling for audit tests, planning &amp; summary memos</li></ul></div></div>
+      <div class="exp-card rv d3"><div class="exp-meta"><div class="exp-date">MAY – JUL 2024</div><div class="exp-org">Grok Learning</div></div><div><div class="exp-title">Data Science Intern</div><ul class="exp-body"><li>Sentiment analysis NN on IMDB — 87.71% accuracy</li><li>Car logo detection (ssd-mobilenet-v2), 57.2% mAP on Raspberry Pi</li><li>Waste segmentation model → 96.8% accuracy</li></ul></div></div>
+      <div class="exp-card rv d4"><div class="exp-meta"><div class="exp-date">AUG 2021 – MAY 2025</div><div class="exp-org">NMIMS — MPSTME</div></div><div><div class="exp-title">BTech CSE — Cyber Security</div><div class="exp-body">CGPA: 3.70/4.0 · Mumbai, India</div></div></div>
+    </div>
+    <div style="margin-top:1.5rem;" class="rv d5"><a href="#" class="btn btn-ghost">📄 Download Resume</a></div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="wrap">
+    <div class="sec-eyebrow rv"><span class="sec-num">05 — ACTIVITIES</span><div class="sec-line"></div></div>
+    <h2 class="sec-title rv d1">Beyond the <span class="o">code.</span></h2>
+    <p class="sec-sub rv d2">Leadership, creativity, community.</p>
+    <div class="act-grid">
+      <div class="act-card rv d1"><div class="act-title">Senator, External Affairs</div><div class="act-date">FEB 2026 – PRESENT</div><div class="act-org">Graduate Student Council, Northeastern</div></div>
+      <div class="act-card rv d2"><div class="act-title">Editor in Chief — Colloque</div><div class="act-date">JAN – JUN 2023</div><div class="act-org">MPSTME</div><div class="act-body">Founded &amp; led a business magazine — editorial calendar, layout design, team interviews.</div><a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="act-link">READ COLLOQUE ↗</a></div>
+      <div class="act-card rv d3"><div class="act-title">MUN Delegate</div><div class="act-date">2021 – 2024</div><div class="act-org">Multiple Conferences</div><div class="act-body">Represented countries on global policy — research, speaking, negotiation.</div></div>
+      <div class="act-card rv d4"><div class="act-title">Joint Secretary</div><div class="act-date">JUN 2022 – MAY 2023</div><div class="act-org">Students' Council BM Cell</div><div class="act-body">Led 40+ executives; participation +70%, online reach +20%.</div></div>
+      <div class="act-card rv d5"><div class="act-title">Teaching Volunteer</div><div class="act-date">MAY – JUN 2022</div><div class="act-org">Spark-A-Change Foundation</div><div class="act-body">60+ hours tutoring underprivileged students in Science, Math, English.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap" style="text-align:center;position:relative;">
+    <div class="ct-bg"></div>
+    <div class="ct-inner">
+      <div class="sec-eyebrow rv" style="justify-content:center;"><span class="sec-num">06 — CONTACT</span></div>
+      <h2 class="ct-title rv d1">Let's<br/><span class="o">build</span><br/><span class="dim">something.</span></h2>
+      <div class="ct-links rv d2">
+        <a href="mailto:rutujasjadhav9@gmail.com" class="ct-btn"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>Email</a>
+        <a href="https://linkedin.com/in/rutuja-jadhav9" target="_blank" class="ct-btn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+        <a href="https://github.com/rutujasjadhav" target="_blank" class="ct-btn"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Rutuja Jadhav</span>
+  <span>Boston, MA — Built with intention ✦</span>
+</footer>
 
 <script>
-const labels = ['I — About','II — Skills','III — Projects','IV — Experience','V — Activities','VI — Connect'];
-let cur = 0;
-const total = 6;
-const gallery = document.getElementById('gallery');
-const dots = document.querySelectorAll('.nav-dot');
-
-function goTo(n) {
-  cur = Math.max(0, Math.min(total - 1, n));
-  gallery.style.transform = `translateX(-${cur * 100}vw)`;
-  dots.forEach((d,i) => d.classList.toggle('active', i === cur));
-  document.getElementById('rlabel').textContent = labels[cur];
-}
-
-function go(dir) { goTo(cur + dir); }
-
-function enterGallery() {
-  document.getElementById('entrance').classList.add('out');
-  document.getElementById('nav').style.display = 'flex';
-  document.getElementById('rlabel').style.display = 'block';
-  document.getElementById('hint').style.display = 'flex';
-  document.getElementById('rlabel').textContent = labels[0];
-  setTimeout(() => document.getElementById('entrance').style.display='none', 1400);
-}
-
-// keyboard
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') go(1);
-  if (e.key === 'ArrowLeft') go(-1);
-});
-
-// touch/swipe
-let tx = 0;
-document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
-document.addEventListener('touchend', e => {
-  const dx = tx - e.changedTouches[0].clientX;
-  if (Math.abs(dx) > 50) go(dx > 0 ? 1 : -1);
-});
-
-// drag-to-scroll projects rail
-const pr = document.getElementById('pr');
-if (pr) {
-  let dn=false,sx,sl;
-  pr.addEventListener('mousedown',e=>{dn=true;sx=e.pageX-pr.offsetLeft;sl=pr.scrollLeft;pr.style.cursor='grabbing';});
-  pr.addEventListener('mouseleave',()=>{dn=false;pr.style.cursor='grab';});
-  pr.addEventListener('mouseup',()=>{dn=false;pr.style.cursor='grab';});
-  pr.addEventListener('mousemove',e=>{if(!dn)return;e.preventDefault();pr.scrollLeft=sl-(e.pageX-pr.offsetLeft-sx)*1.5;});
-}
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:0.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
