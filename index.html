@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rutuja Jadhav | Portfolio</title>
+<style>
+  :root {
+    --bg: #000000;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --accent: #7c3aed;
+    --accent2: #3b82f6;
+    --accent3: #a78bfa;
+    --text: #f0f0f0;
+    --muted: #888888;
+    --border: #1f1f1f;
+    --radius: 12px;
+    --font: 'Segoe UI', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(0,0,0,0.92); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 2.5rem;
+  }
+  .nav-logo { font-weight: 700; font-size: 1.2rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  section { padding: 6rem 2.5rem; max-width: 900px; margin: 0 auto; }
+
+  #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 5rem; }
+  .hero-tag { font-size: 0.85rem; color: var(--accent3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .hero-name { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+  .hero-name span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin-bottom: 2rem; }
+  .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { padding: 0.65rem 1.4rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent3); }
+
+  .section-title { font-size: 1.7rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .section-line { width: 40px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent3)); border-radius: 2px; margin-bottom: 2.5rem; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+  .interests { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+  .interests h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent3); margin-bottom: 1rem; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { background: rgba(59,130,246,0.12); color: var(--accent3); border: 1px solid rgba(59,130,246,0.25); padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; }
+  .skill-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; transition: border-color 0.2s; }
+  .skill-card:hover { border-color: var(--accent2); }
+  .skill-card h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent3); margin-bottom: 0.75rem; }
+  .skill-card p { color: var(--muted); font-size: 0.85rem; }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; gap: 1.25rem; }
+  .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; }
+  .project-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; }
+  .project-title { font-weight: 700; font-size: 0.95rem; }
+  .project-date { color: var(--muted); font-size: 0.78rem; white-space: nowrap; margin-left: 1rem; }
+  .project-desc { color: var(--muted); font-size: 0.87rem; margin-bottom: 1rem; }
+  .project-desc li { margin-left: 1.2rem; margin-bottom: 0.3rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .project-tag { background: rgba(37,99,235,0.1); color: var(--muted); border: 1px solid var(--border); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; }
+
+  /* EXPERIENCE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item { display: grid; grid-template-columns: 150px 1fr; gap: 1.5rem; padding-bottom: 2rem; position: relative; }
+  .timeline-item:not(:last-child)::before { content: ''; position: absolute; left: 149px; top: 8px; bottom: 0; width: 1px; background: var(--border); }
+  .timeline-dot { position: absolute; left: 143px; top: 6px; width: 13px; height: 13px; border-radius: 50%; background: var(--accent2); border: 2px solid var(--bg); }
+  .timeline-date { color: var(--muted); font-size: 0.8rem; padding-top: 0.1rem; text-align: right; }
+  .timeline-content h4 { font-weight: 700; margin-bottom: 0.15rem; font-size: 0.95rem; }
+  .timeline-content .org { color: var(--accent3); font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .timeline-content p, .timeline-content li { color: var(--muted); font-size: 0.85rem; }
+  .timeline-content ul { margin-left: 1.1rem; }
+  .timeline-content li { margin-bottom: 0.25rem; }
+  .resume-link { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 2rem; }
+
+  /* EXTRACURRICULARS */
+  .extra-grid { display: grid; gap: 1rem; }
+  .extra-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+  .extra-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem; }
+  .extra-title { font-weight: 700; font-size: 0.9rem; }
+  .extra-date { color: var(--muted); font-size: 0.78rem; white-space: nowrap; margin-left: 1rem; }
+  .extra-org { color: var(--accent3); font-size: 0.82rem; margin-bottom: 0.4rem; }
+  .extra-desc { color: var(--muted); font-size: 0.84rem; }
+
+  /* CONTACT */
+  .contact-intro { color: var(--muted); margin-bottom: 2rem; max-width: 480px; font-size: 0.95rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; text-decoration: none; color: var(--text); transition: border-color 0.2s; }
+  .contact-item:hover { border-color: var(--accent2); }
+  .contact-icon { font-size: 1.2rem; }
+  .contact-label { font-size: 0.75rem; color: var(--muted); }
+  .contact-value { font-weight: 600; font-size: 0.9rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem; }
+    .nav-links { gap: 1rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.2rem; }
+    .timeline-item::before, .timeline-dot { display: none; }
+    .timeline-date { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Rutuja Jadhav</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#extras">Activities</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-tag">👋 Hello, I'm</p>
+  <h1 class="hero-name">Rutuja Jadhav<br/><span>Aspiring Data Scientist</span></h1>
+  <p class="hero-sub">MS Data Science student at Northeastern University. I uncover insights from data, build impactful ML models, and bridge analytics with real-world business impact — especially in fintech and consumer tech.</p>
+  <div class="btn-row">
+    <a href="#projects" class="btn btn-primary">View My Work</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">About Me</h2>
+  <div class="section-line"></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm an aspiring Data Scientist with a strong foundation in Computer Science and a passion for creativity and innovation. Currently pursuing my Master's in Data Science at Northeastern University's Khoury College of Computer Sciences, I enjoy uncovering insights from data and developing impactful data mining models.</p>
+      <p>Beyond analytics, my interest in design fuels my creativity and strengthens my problem-solving mindset. I'm particularly fascinated by the fintech and consumer tech industries, where data is transforming personalization and customer experiences.</p>
+    </div>
+    <div class="interests">
+      <h4>Interests</h4>
+      <div class="tag-list">
+        <span class="tag">Machine Learning</span>
+        <span class="tag">Data Science</span>
+        <span class="tag">NLP</span>
+        <span class="tag">Fintech</span>
+        <span class="tag">Consumer Tech</span>
+        <span class="tag">Computer Vision</span>
+        <span class="tag">Data Engineering</span>
+        <span class="tag">Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <h2 class="section-title">Skills</h2>
+  <div class="section-line"></div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <h4>Languages</h4>
+      <p>Python, SQL, R, Java, HTML, CSS</p>
+    </div>
+    <div class="skill-card">
+      <h4>ML / AI</h4>
+      <p>Sklearn, TensorFlow, Keras, Neural Networks, SVM, Random Forest, PCA, Apriori</p>
+    </div>
+    <div class="skill-card">
+      <h4>Frameworks & Libraries</h4>
+      <p>NumPy, Pandas, Matplotlib, Seaborn, OpenCV, Imblearn, PySpark</p>
+    </div>
+    <div class="skill-card">
+      <h4>Databases</h4>
+      <p>MySQL, SQLite, Oracle DB XE — ERD, normalization, stored procedures</p>
+    </div>
+    <div class="skill-card">
+      <h4>Tools</h4>
+      <p>Jupyter, Tableau, MS Excel, Weka, Android Studio, Kali Linux, LabelImg</p>
+    </div>
+    <div class="skill-card">
+      <h4>Data Modeling</h4>
+      <p>UML, Entity-Relationship Diagrams, logical & physical modeling</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="section-line"></div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-title">Restaurant Visits Database System</span>
+        <span class="project-date">March 2026</span>
+      </div>
+      <ul class="project-desc">
+        <li>Designed a normalized 8-table MySQL schema (3NF) with full ERD design, surrogate keys, and FK relationships</li>
+        <li>Automated DB creation and bulk CSV loading via R scripts on a cloud-hosted Aiven MySQL instance</li>
+        <li>Built stored procedures (storeNewServer, updateServer) with integrity checks and R-side test harnesses</li>
+        <li>Produced an R Markdown analytics report surfacing business insights from the restaurant visits data</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">MySQL</span><span class="project-tag">R</span><span class="project-tag">SQLite</span><span class="project-tag">ETL</span><span class="project-tag">Data Modeling</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-title">E-Commerce Recommendation System</span>
+        <span class="project-date">December 2025</span>
+      </div>
+      <ul class="project-desc">
+        <li>Combined Market Basket Analysis (Apriori) and DistilBERT sentiment analysis on 38K+ transactions and 4K+ reviews</li>
+        <li>Built end-to-end data pipeline with SQLite, ETL workflows, NLP preprocessing across 167 product categories</li>
+        <li>Achieved 70.5% positive sentiment classification; identified high-lift product pairs (up to 1.62)</li>
+        <li>Developed an interactive Streamlit dashboard for non-technical stakeholders</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">Python</span><span class="project-tag">NLP</span><span class="project-tag">DistilBERT</span><span class="project-tag">Apriori</span><span class="project-tag">Streamlit</span><span class="project-tag">SQLite</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-title">Breast Tumor Bed Volume Estimation (Research)</span>
+        <span class="project-date">Nov 2023 – Jun 2025</span>
+      </div>
+      <ul class="project-desc">
+        <li>Led a team of 6 in collaboration with Nanavati Max Super Speciality Hospital, Mumbai</li>
+        <li>Developed an AI model to auto-segment breast tumor beds using surgical clip alignments and pre-surgical scans</li>
+        <li>Conducted literature review, coordinated with doctors, and managed full data collection pipeline</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">Deep Learning</span><span class="project-tag">Medical Imaging</span><span class="project-tag">Segmentation</span><span class="project-tag">Research</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-title">Deepfake Audio Detection</span>
+        <span class="project-date">Jun – Nov 2024</span>
+      </div>
+      <ul class="project-desc">
+        <li>Detected fake audio using 13,000+ files from the "For and Real" dataset via image-based audio conversion</li>
+        <li>Tested TCN, GRU, and EfficientNet on STFT, Melspectrogram, and MFCC features</li>
+        <li>Best result: EfficientNet with dual Melspectrogram + MFCC input — 99.62% accuracy</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">EfficientNet</span><span class="project-tag">GRU</span><span class="project-tag">TCN</span><span class="project-tag">Audio ML</span><span class="project-tag">Python</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-title">Password Strength Classifier</span>
+        <span class="project-date">March 2023</span>
+      </div>
+      <ul class="project-desc">
+        <li>Classified passwords into weak/medium/strong using SVM, KNN, and Random Forest with engineered features</li>
+        <li>SVM achieved 99.98% accuracy; addressed class imbalance via under-sampling</li>
+      </ul>
+      <div class="project-tags">
+        <span class="project-tag">SVM</span><span class="project-tag">KNN</span><span class="project-tag">scikit-learn</span><span class="project-tag">Feature Engineering</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <h2 class="section-title">Experience &amp; Education</h2>
+  <div class="section-line"></div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-date">Sep 2025 – May 2027</span>
+      <div class="timeline-content">
+        <h4>MS in Data Science</h4>
+        <div class="org">Northeastern University — Khoury College of Computer Sciences, Boston, MA</div>
+        <p>CGPA: 3.66 / 4.0 &nbsp;·&nbsp; Courses: Database Management Systems, Machine Learning</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-date">Jul – Aug 2025</span>
+      <div class="timeline-content">
+        <h4>Audit Intern, ITDA</h4>
+        <div class="org">Deloitte</div>
+        <ul>
+          <li>Assisted IT audit engagements with a focus on SOC 1 &amp; SOC 2 (Type 1 and Type 2) reports</li>
+          <li>Performed sampling for audit tests and prepared planning and summary memos with supporting documentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-date">May – Jul 2024</span>
+      <div class="timeline-content">
+        <h4>Data Science Intern</h4>
+        <div class="org">Grok Learning</div>
+        <ul>
+          <li>Built a sentiment analysis model (4-layer feedforward NN) on the IMDB dataset — 87.71% accuracy using Keras + Adam optimizer</li>
+          <li>Implemented an object detection model (ssd-mobilenet-v2) for car logo detection on road, achieving 57.2% mAP; deployed on Raspberry Pi for real-time inference</li>
+          <li>Optimized a waste management segmentation model via fine-tuning, improving accuracy to 96.8%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-date">Aug 2021 – May 2025</span>
+      <div class="timeline-content">
+        <h4>BTech in Computer Science &amp; Engineering</h4>
+        <div class="org">NMIMS — Mukesh Patel School of Technology Management and Engineering, Mumbai</div>
+        <p>Specialization: Cyber Security &nbsp;·&nbsp; CGPA: 3.70 / 4.0</p>
+      </div>
+    </div>
+
+  </div>
+  <a href="#" class="btn btn-outline resume-link">📄 Download Resume</a>
+</section>
+
+<!-- EXTRACURRICULARS -->
+<section id="extras">
+  <h2 class="section-title">Activities &amp; Leadership</h2>
+  <div class="section-line"></div>
+  <div class="extra-grid">
+
+    <div class="extra-card">
+      <div class="extra-header">
+        <span class="extra-title">Senator for External Affairs</span>
+        <span class="extra-date">Feb 2026 – Present</span>
+      </div>
+      <div class="extra-org">Graduate Student Council, Northeastern University</div>
+    </div>
+
+    <div class="extra-card">
+      <div class="extra-header">
+        <span class="extra-title">Joint Secretary</span>
+        <span class="extra-date">Jun 2022 – May 2023</span>
+      </div>
+      <div class="extra-org">Students' Council Business &amp; Management Cell, MPSTME</div>
+      <p class="extra-desc">Led 40+ executives to organize a national-level business plan competition; increased event participation by 70% and online reach by 20%.</p>
+    </div>
+
+    <div class="extra-card">
+      <div class="extra-header">
+        <span class="extra-title">Editor in Chief</span>
+        <span class="extra-date">Jan – Jun 2023</span>
+      </div>
+      <div class="extra-org">Colloque Business Magazine, MPSTME</div>
+      <p class="extra-desc">Led a team of 5 to design the template, curate article topics, and interview college teams on their business plans.</p>
+    </div>
+
+    <div class="extra-card">
+      <div class="extra-header">
+        <span class="extra-title">Teaching Volunteer</span>
+        <span class="extra-date">May – Jun 2022</span>
+      </div>
+      <div class="extra-org">Spark-A-Change Foundation</div>
+      <p class="extra-desc">Volunteered 60+ hours tutoring underprivileged students (grades 5–8) in Science, Math, and English.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="section-line"></div>
+  <p class="contact-intro">I'm open to internships, full-time roles, and interesting collaborations. Feel free to reach out!</p>
+  <div class="contact-links">
+    <a href="mailto:rutujasjadhav9@gmail.com" class="contact-item">
+      <span class="contact-icon">✉️</span>
+      <div><div class="contact-label">Email</div><div class="contact-value">rutujasjadhav9@gmail.com</div></div>
+    </a>
+    <a href="https://linkedin.com/in/rutuja-jadhav9" target="_blank" class="contact-item">
+      <span class="contact-icon">💼</span>
+      <div><div class="contact-label">LinkedIn</div><div class="contact-value">linkedin.com/in/rutuja-jadhav9</div></div>
+    </a>
+    <a href="https://github.com/rutujasjadhav" target="_blank" class="contact-item">
+      <span class="contact-icon">🐙</span>
+      <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/rutujasjadhav</div></div>
+    </a>
+  </div>
+</section>
+
+<footer>Built with ❤️ by Rutuja Jadhav · 2026</footer>
+
+</body>
+</html>
