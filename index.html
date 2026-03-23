@@ -1,40 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Rutuja Jadhav | Portfolio</title>
+<title>Rutuja Jadhav | Gallery</title>
 <style>
-  :root {
-    --bg: #000000;
-    --surface: #080d14;
-    --surface2: #0f1a2e;
-    --accent: #1d4ed8;
-    --accent2: #3b82f6;
-    --accent3: #93c5fd;
-    --gold: #1e40af;
-    --text: #eff6ff;
-    --muted: #6b8ab5;
-    --border: #0f1e35;
-    --radius: 12px;
-    --font: 'Segoe UI', system-ui, sans-serif;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI',system-ui,sans-serif;color:#e8edf8;}
 
-  nav {
-    position: fixed; top: 0; width: 100%; z-index: 100;
-    background: rgba(0,0,0,0.92); backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0.75rem 2rem;
-  }
-  .nav-logo { font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .nav-links { display: flex; gap: 1.25rem; list-style: none; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
+/* ── LOBBY ── */
+#lobby{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;transition:opacity .8s ease;}
+#lobby.hidden{opacity:0;pointer-events:none;}
 
+.lobby-floor{position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(to bottom,#0a0a12,#111122);}
+.lobby-ceiling{position:absolute;top:0;left:0;right:0;height:28%;background:#050508;}
+.lobby-wall{position:absolute;top:28%;left:0;right:0;bottom:38%;background:#0a0a14;}
+
+/* perspective floor tiles */
+.floor-tiles{position:absolute;bottom:0;left:0;right:0;height:38%;overflow:hidden;}
+.floor-tiles svg{width:100%;height:100%;}
+
+/* spotlight from ceiling */
+.spotlight{position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:100%;background:radial-gradient(ellipse 200px 600px at 50% 0%,rgba(255,240,180,0.07) 0%,transparent 70%);pointer-events:none;}
+
+/* title plate */
+.lobby-title{position:relative;z-index:2;text-align:center;margin-bottom:3rem;}
+.lobby-title h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:.08em;color:#fff;text-shadow:0 0 60px rgba(59,130,246,.4);}
+.lobby-title p{color:#6b8ab5;font-size:1rem;letter-spacing:.2em;text-transform:uppercase;margin-top:.5rem;}
+
+/* gallery doors */
+.doors{position:relative;z-index:2;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;max-width:900px;}
+.door{width:110px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.6rem;transition:transform .2s;}
+.door:hover{transform:translateY(-4px);}
+.door-frame{width:100%;aspect-ratio:2/3;border:2px solid #1e3a5f;border-radius:4px 4px 0 0;position:relative;background:#050510;overflow:hidden;transition:border-color .3s,box-shadow .3s;}
+.door:hover .door-frame{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,.3);}
+.door-inner{position:absolute;inset:6px;border:1px solid #0f1e35;border-radius:2px;}
+.door-knob{position:absolute;right:10px;top:50%;width:6px;height:6px;border-radius:50%;background:#3b82f6;transform:translateY(-50%);}
+.door-light{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:4px;background:rgba(59,130,246,.4);filter:blur(4px);}
+.door-number{font-size:.65rem;color:#3b82f6;letter-spacing:.15em;text-transform:uppercase;}
+.door-label{font-size:.7rem;color:#6b8ab5;text-align:center;letter-spacing:.05em;}
+
+/* ── ROOM ── */
+#room{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .6s ease;}
+#room.visible{opacity:1;pointer-events:all;}
+
+.room-ceiling{height:80px;background:#050508;position:relative;flex-shrink:0;}
+.room-floor{height:80px;background:linear-gradient(to bottom,#0a0a12,#080810);flex-shrink:0;position:relative;}
+.room-walls{flex:1;background:#08080f;position:relative;overflow:hidden;}
+
+/* spotlight cone in room */
+.room-spot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:500px;height:100%;background:radial-gradient(ellipse 250px 700px at 50% -10%,rgba(255,240,180,0.08) 0%,transparent 65%);pointer-events:none;}
+
+/* back button */
+.back-btn{position:fixed;top:1.5rem;left:1.5rem;z-index:20;background:rgba(0,0,0,.7);border:1px solid #1e3a5f;color:#6b8ab5;padding:.5rem 1rem;border-radius:6px;cursor:pointer;font-size:.8rem;letter-spacing:.08em;transition:all .2s;}
+.back-btn:hover{border-color:#3b82f6;color:#93c5fd;}
+
+.room-label{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);z-index:20;font-size:.7rem;color:#3b82f6;letter-spacing:.2em;text-transform:uppercase;}
+
+/* ── CONTENT INSIDE ROOM ── */
+.room-content{position:absolute;inset:0;overflow-y:auto;padding:2rem 2rem 3rem;scrollbar-width:thin;scrollbar-color:#1e3a5f #000;}
+.room-content::-webkit-scrollbar{width:4px;}
+.room-content::-webkit-scrollbar-track{background:#000;}
+.room-content::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:2px;}
+
+/* ── FRAMES ── */
+.frame{background:#030308;border:3px solid #1a1a2e;border-radius:2px;position:relative;padding:1.5rem;max-width:700px;margin:0 auto 2.5rem;}
+.frame::before{content:'';position:absolute;inset:-8px;border:1px solid #0f1e35;border-radius:4px;pointer-events:none;}
+.frame-spot{position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:120px;height:60px;background:radial-gradient(ellipse 60px 50px at 50% 0%,rgba(255,240,180,0.15),transparent);pointer-events:none;}
+
+/* placard */
+.placard{background:#070710;border:1px solid #1e3a5f;border-radius:2px;padding:1rem 1.25rem;margin:0 auto 1.5rem;max-width:700px;position:relative;}
+.placard::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:30px;height:2px;background:#3b82f6;opacity:.4;}
+.placard-num{font-size:.65rem;color:#3b82f6;letter-spacing:.2em;margin-bottom:.25rem;}
+.placard-title{font-size:1rem;font-weight:700;margin-bottom:.15rem;}
+.placard-sub{font-size:.78rem;color:#6b8ab5;}
+
+/* section title in frame */
+.frame-title{font-size:.65rem;color:#3b82f6;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem;}
+.section-title-big{font-size:1.6rem;font-weight:800;margin-bottom:.3rem;}
+.section-line{width:36px;height:2px;background:linear-gradient(90deg,#1d4ed8,#3b82f6);margin-bottom:1.5rem;}
+
+/* typography */
+p.body{color:#6b8ab5;font-size:.9rem;line-height:1.7;margin-bottom:.9rem;}
+.tag{display:inline-block;background:rgba(59,130,246,.1);color:#93c5fd;border:1px solid rgba(59,130,246,.2);padding:.2rem .65rem;border-radius:20px;font-size:.75rem;margin:.2rem .15rem;}
+
+/* skills grid */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
+.skill-card{background:#060612;border:1px solid #0f1e35;border-radius:8px;padding:1rem;}
+.skill-card h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#3b82f6;margin-bottom:.5rem;}
+.skill-card p{color:#6b8ab5;font-size:.82rem;}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:grid;grid-template-columns:120px 1fr;gap:1.25rem;padding-bottom:1.5rem;position:relative;}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:119px;top:6px;bottom:0;width:1px;background:#0f1e35;}
+.tl-dot{position:absolute;left:113px;top:5px;width:12px;height:12px;border-radius:50%;background:#1d4ed8;border:2px solid #000;}
+.tl-date{color:#6b8ab5;font-size:.75rem;text-align:right;padding-top:.1rem;}
+.tl-content h4{font-weight:700;font-size:.88rem;margin-bottom:.1rem;}
+.tl-content .org{color:#3b82f6;font-size:.8rem;margin-bottom:.3rem;}
+.tl-content p,.tl-content li{color:#6b8ab5;font-size:.82rem;}
+.tl-content ul{margin-left:1rem;}
+.tl-content li{margin-bottom:.2rem;}
+
+/* projects scroll */
+.proj-scroll{display:flex;gap:1.25rem;overflow-x:auto;padding-bottom:1rem;cursor:grab;scrollbar-width:none;}
+.proj-scroll::-webkit-scrollbar{display:none;}
+.proj-card{min-width:280px;max-width:280px;background:#060612;border:1px solid #0f1e35;border-radius:8px;padding:1.25rem;flex-shrink:0;transition:border-color .2s;}
+.proj-card:hover{border-color:#1d4ed8;}
+.proj-title{font-weight:700;font-size:.88rem;margin-bottom:.25rem;}
+.proj-date{color:#6b8ab5;font-size:.72rem;margin-bottom:.6rem;}
+.proj-desc{color:#6b8ab5;font-size:.8rem;margin-bottom:.75rem;padding-left:.9rem;}
+.proj-desc li{margin-bottom:.2rem;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.proj-tag{background:rgba(29,78,216,.1);color:#6b8ab5;border:1px solid #0f1e35;padding:.15rem .5rem;border-radius:4px;font-size:.7rem;}
+
+/* extras */
+.extra-card{background:#060612;border:1px solid #0f1e35;border-radius:8px;padding:1rem 1.25rem;margin-bottom:.8rem;}
+.extra-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.25rem;}
+.extra-title{font-weight:700;font-size:.85rem;}
+.extra-date{color:#6b8ab5;font-size:.72rem;white-space:nowrap;margin-left:.75rem;}
+.extra-org{color:#3b82f6;font-size:.78rem;margin-bottom:.3rem;}
+.extra-desc{color:#6b8ab5;font-size:.8rem;}
+.extra-link{color:#3b82f6;font-size:.78rem;text-decoration:none;display:inline-block;margin-top:.3rem;}
+.extra-link:hover{color:#93c5fd;}
+
+/* contact */
+.contact-row{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;}
+.c-btn{display:flex;align-items:center;justify-content:center;width:52px;height:52px;background:#060612;border:1px solid #1e3a5f;border-radius:50%;text-decoration:none;transition:border-color .2s,transform .2s;}
+.c-btn:hover{border-color:#3b82f6;transform:translateY(-3px);}
+.c-btn svg{width:22px;height:22px;fill:#6b8ab5;transition:fill .2s;}
+.c-btn:hover svg{fill:#93c5fd;}
+
+/* fun facts */
+.fun-row{display:flex;align-items:center;gap:.6rem;padding:.5rem 0;border-bottom:1px solid #0a0a1a;font-size:.85rem;color:#6b8ab5;}
+.fun-row:last-child{border-bottom:none;}
+.fun-row .hi{color:#93c5fd;font-weight:600;}
+.fun-row img{width:18px;height:18px;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LOBBY ═══════════ -->
+<div id="lobby">
+  <div class="lobby-ceiling"></div>
+  <div class="lobby-wall"></div>
+  <div class="lobby-floor"></div>
+  <div class="floor-tiles">
+    <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+      <defs><pattern id="tp" x="0" y="0" width="20" height="10" patternUnits="userSpaceOnUse">
+        <polygon points="10,0 20,5 10,10 0,5" fill="none" stroke="#0f1e35" stroke-width=".3"/>
+      </pattern></defs>
+      <rect width="100" height="40" fill="url(#tp)"/>
+    </svg>
+  </div>
+  <div class="spotlight"></div>
+
+  <div class="lobby-title">
+    <h1>RUTUJA JADHAV</h1>
+    <p>Gallery · Data Science &amp; Creative Works</p>
+  </div>
+
+  <div class="doors">
+    <div class="door" onclick="openRoom('about')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room I</div>
+      <div class="door-label">About</div>
+    </div>
+    <div class="door" onclick="openRoom('skills')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room II</div>
+      <div class="door-label">Skills</div>
+    </div>
+    <div class="door" onclick="openRoom('projects')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room III</div>
+      <div class="door-label">Projects</div>
+    </div>
+    <div class="door" onclick="openRoom('experience')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room IV</div>
+      <div class="door-label">Experience</div>
+    </div>
+    <div class="door" onclick="openRoom('activities')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room V</div>
+      <div class="door-label">Activities</div>
+    </div>
+    <div class="door" onclick="openRoom('contact')">
+      <div class="door-frame">
+        <div class="door-light"></div>
+        <div class="door-inner"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="door-number">Room VI</div>
+      <div class="door-label">Connect</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ROOM ═══════════ -->
+<div id="room">
+  <div class="room-ceiling"></div>
+  <div class="room-walls">
+    <div class="room-spot"></div>
+    <div class="room-content" id="room-content"></div>
+  </div>
+  <div class="room-floor"></div>
+</div>
+
+<button class="back-btn" id="back-btn" style="display:none" onclick="closeRoom()">← Gallery</button>
+<div class="room-label" id="room-label" style="display:none"></div>
+
+<script>
+const rooms = {
+  about: {
+    label: 'Room I — About',
+    html: `
+    <div class="frame">
+      <div class="frame-spot"></div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="images/profile.jpeg" alt="Rutuja" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid #1d4ed8;flex-shrink:0;"/>
+        <div>
+          <div class="frame-title">Artist Statement</div>
+          <div class="section-title-big">Rutuja Jadhav</div>
+          <div class="section-line"></div>
+          <p class="body">I'm an aspiring Data Scientist with a strong foundation in Computer Science and a passion for creativity and innovation. Currently pursuing my Master's in Data Science at Northeastern University's Khoury College of Computer Sciences.</p>
+          <p class="body">Beyond the terminal, I'm drawn to the visual side of things — editorial design, doodling, and storytelling through layout and type. Fascinated by fintech, consumer analytics, and predictive modeling, where data shapes how people experience products and brands.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="placard">
+      <div class="placard-num">Exhibit 1.1</div>
+      <div class="placard-title">Tech Interests</div>
+      <div style="margin-top:.6rem;">
+        <span class="tag">Machine Learning</span><span class="tag">Predictive Analytics</span><span class="tag">Consumer Analytics</span><span class="tag">Fintech</span><span class="tag">NLP</span><span class="tag">Data Engineering</span><span class="tag">Computer Vision</span>
+      </div>
+    </div>
+
+    <div class="placard">
+      <div class="placard-num">Exhibit 1.2 — Get to Know Me</div>
+      <div style="margin-top:.5rem;">
+        <div class="fun-row"><img src="images/duolingo.png" alt="Duolingo"/><span><span class="hi">600+ day streak</span> in German 🇩🇪</span></div>
+        <div class="fun-row"><span>🏸</span><span>Badminton player</span></div>
+        <div class="fun-row"><span>🎤</span><span>MUN delegate — debated global policy on international stages</span></div>
+        <div class="fun-row"><span>✏️</span><span>Editorial design, doodling &amp; media</span></div>
+        <div class="fun-row"><span>📖</span><a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="extra-link">Colloque Magazine</a><span style="margin-left:.4rem;">— co-founded &amp; edited</span></div>
+        <div class="fun-row"><span>📍</span><span>Boston, MA &nbsp;·&nbsp; GSC Senator, Northeastern</span></div>
+      </div>
+    </div>`
+  },
+
+  skills: {
+    label: 'Room II — Skills',
+    html: `
+    <div class="frame">
+      <div class="frame-spot"></div>
+      <div class="frame-title">Technical Catalogue</div>
+      <div class="section-title-big">Skills</div>
+      <div class="section-line"></div>
+      <div class="skills-grid">
+        <div class="skill-card"><h4>Languages</h4><p>Python, SQL, R, Java, HTML, CSS</p></div>
+        <div class="skill-card"><h4>ML / AI</h4><p>Sklearn, TensorFlow, Keras, SVM, Random Forest, PCA, Neural Networks, Apriori</p></div>
+        <div class="skill-card"><h4>Libraries</h4><p>NumPy, Pandas, Matplotlib, Seaborn, OpenCV, Imblearn, PySpark</p></div>
+        <div class="skill-card"><h4>Databases</h4><p>MySQL, SQLite, Oracle DB XE — ERD, normalization, stored procedures</p></div>
+        <div class="skill-card"><h4>Tools</h4><p>Jupyter, Tableau, MS Excel, Weka, Android Studio, Kali Linux, LabelImg</p></div>
+        <div class="skill-card"><h4>Data Modeling</h4><p>UML, Entity-Relationship Diagrams, logical &amp; physical modeling</p></div>
+      </div>
+    </div>`
+  },
+
+  projects: {
+    label: 'Room III — Projects',
+    html: `
+    <div class="placard" style="margin-bottom:1.5rem;">
+      <div class="placard-num">Collection III</div>
+      <div class="placard-title">Selected Works</div>
+      <div class="placard-sub">Drag to explore →</div>
+    </div>
+    <div class="proj-scroll" id="ps">
+      <div class="proj-card">
+        <div class="proj-title">Restaurant Visits Database System</div>
+        <div class="proj-date">Mar 2026</div>
+        <ul class="proj-desc">
+          <li>Normalized 8-table MySQL schema (3NF) with full ERD</li>
+          <li>Automated DB creation &amp; bulk CSV loading via R on Aiven MySQL</li>
+          <li>Stored procedures with integrity checks and R-side test harnesses</li>
+          <li>R Markdown analytics report surfacing business insights</li>
+        </ul>
+        <div class="proj-tags"><span class="proj-tag">MySQL</span><span class="proj-tag">R</span><span class="proj-tag">SQLite</span><span class="proj-tag">ETL</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-title">E-Commerce Recommendation System</div>
+        <div class="proj-date">Dec 2025</div>
+        <ul class="proj-desc">
+          <li>Apriori + DistilBERT on 38K+ transactions and 4K+ reviews</li>
+          <li>End-to-end pipeline across 167 product categories</li>
+          <li>70.5% positive sentiment; high-lift product pairs up to 1.62</li>
+          <li>Interactive Streamlit dashboard for stakeholders</li>
+        </ul>
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">NLP</span><span class="proj-tag">DistilBERT</span><span class="proj-tag">Streamlit</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-title">Breast Tumor Bed Volume Estimation</div>
+        <div class="proj-date">Nov 2023 – Jun 2025</div>
+        <ul class="proj-desc">
+          <li>Led team of 6 with Nanavati Max Super Speciality Hospital</li>
+          <li>AI model to auto-segment tumor beds using surgical clips</li>
+          <li>Managed full data collection and literature review</li>
+        </ul>
+        <div class="proj-tags"><span class="proj-tag">Deep Learning</span><span class="proj-tag">Medical Imaging</span><span class="proj-tag">Research</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-title">Deepfake Audio Detection</div>
+        <div class="proj-date">Jun – Nov 2024</div>
+        <ul class="proj-desc">
+          <li>13,000+ audio files via image-based conversion</li>
+          <li>Tested TCN, GRU, EfficientNet on STFT, Mel &amp; MFCC features</li>
+          <li>EfficientNet + dual input → 99.62% accuracy</li>
+        </ul>
+        <div class="proj-tags"><span class="proj-tag">EfficientNet</span><span class="proj-tag">GRU</span><span class="proj-tag">Audio ML</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-title">Password Strength Classifier</div>
+        <div class="proj-date">Mar 2023</div>
+        <ul class="proj-desc">
+          <li>SVM, KNN, Random Forest with engineered features</li>
+          <li>SVM → 99.98% accuracy; addressed class imbalance</li>
+        </ul>
+        <div class="proj-tags"><span class="proj-tag">SVM</span><span class="proj-tag">KNN</span><span class="proj-tag">scikit-learn</span></div>
+      </div>
+    </div>`
+  },
+
+  experience: {
+    label: 'Room IV — Experience',
+    html: `
+    <div class="frame">
+      <div class="frame-spot"></div>
+      <div class="frame-title">Provenance</div>
+      <div class="section-title-big">Experience &amp; Education</div>
+      <div class="section-line"></div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <span class="tl-date">Sep 2025 – May 2027</span>
+          <div class="tl-content">
+            <h4>MS in Data Science</h4>
+            <div class="org">Northeastern University — Khoury College, Boston, MA</div>
+            <p>CGPA: 3.66 / 4.0 · DB Management Systems, Machine Learning</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <span class="tl-date">Jul – Aug 2025</span>
+          <div class="tl-content">
+            <h4>Audit Intern, ITDA</h4>
+            <div class="org">Deloitte</div>
+            <ul><li>IT audit engagements focused on SOC 1 &amp; SOC 2 reports</li><li>Sampling for audit tests, planning &amp; summary memos</li></ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <span class="tl-date">May – Jul 2024</span>
+          <div class="tl-content">
+            <h4>Data Science Intern</h4>
+            <div class="org">Grok Learning</div>
+            <ul>
+              <li>Sentiment analysis model (4-layer NN) on IMDB — 87.71% accuracy</li>
+              <li>Car logo detection (ssd-mobilenet-v2), 57.2% mAP on Raspberry Pi</li>
+              <li>Waste management segmentation → 96.8% accuracy</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <span class="tl-date">Aug 2021 – May 2025</span>
+          <div class="tl-content">
+            <h4>BTech Computer Science &amp; Engineering</h4>
+            <div class="org">NMIMS — MPSTME, Mumbai</div>
+            <p>Specialization: Cyber Security · CGPA: 3.70 / 4.0</p>
+          </div>
+        </div>
+      </div>
+      <a href="#" style="display:inline-block;margin-top:1rem;padding:.55rem 1.2rem;border:1px solid #1e3a5f;border-radius:6px;color:#93c5fd;text-decoration:none;font-size:.82rem;">📄 Download Resume</a>
+    </div>`
+  },
+
+  activities: {
+    label: 'Room V — Activities',
+    html: `
+    <div class="placard" style="margin-bottom:1.5rem;">
+      <div class="placard-num">Collection V</div>
+      <div class="placard-title">Leadership &amp; Extracurriculars</div>
+    </div>
+    <div style="max-width:700px;margin:0 auto;">
+      <div class="extra-card">
+        <div class="extra-header"><span class="extra-title">Senator for External Affairs</span><span class="extra-date">Feb 2026 – Present</span></div>
+        <div class="extra-org">Graduate Student Council, Northeastern University</div>
+      </div>
+      <div class="extra-card">
+        <div class="extra-header"><span class="extra-title">Editor in Chief — Colloque Magazine</span><span class="extra-date">Jan – Jun 2023</span></div>
+        <div class="extra-org">MPSTME</div>
+        <p class="extra-desc">Founded and led a business magazine — curated editorial calendar, designed layout, interviewed college teams on their ventures.</p>
+        <a href="https://issuu.com/colloque/docs/colloque_2023" target="_blank" class="extra-link">Read Colloque 2023 ↗</a>
+      </div>
+      <div class="extra-card">
+        <div class="extra-header"><span class="extra-title">MUN Delegate</span><span class="extra-date">2021 – 2024</span></div>
+        <div class="extra-org">Multiple Conferences</div>
+        <p class="extra-desc">Represented countries on global policy — sharpening research, public speaking, and negotiation skills.</p>
+      </div>
+      <div class="extra-card">
+        <div class="extra-header"><span class="extra-title">Joint Secretary</span><span class="extra-date">Jun 2022 – May 2023</span></div>
+        <div class="extra-org">Students' Council Business &amp; Management Cell, MPSTME</div>
+        <p class="extra-desc">Led 40+ executives; increased event participation by 70% and online reach by 20%.</p>
+      </div>
+      <div class="extra-card">
+        <div class="extra-header"><span class="extra-title">Teaching Volunteer</span><span class="extra-date">May – Jun 2022</span></div>
+        <div class="extra-org">Spark-A-Change Foundation</div>
+        <p class="extra-desc">60+ hours tutoring underprivileged students (grades 5–8) in Science, Math, and English.</p>
+      </div>
+    </div>`
+  },
+
+  contact: {
+    label: 'Room VI — Connect',
+    html: `
+    <div class="frame" style="text-align:center;">
+      <div class="frame-spot"></div>
+      <div class="frame-title">Visitor's Book</div>
+      <div class="section-title-big" style="margin-bottom:.3rem;">Let's Connect</div>
+      <div class="section-line" style="margin:0 auto 1.5rem;"></div>
+      <p class="body" style="max-width:420px;margin:0 auto 1.5rem;">Open to internships, full-time roles, and interesting collaborations.</p>
+      <div class="contact-row">
+        <a href="mailto:rutujasjadhav9@gmail.com" class="c-btn" title="Email">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/rutuja-jadhav9" target="_blank" class="c-btn" title="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/rutujasjadhav" target="_blank" class="c-btn" title="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>`
+  }
+};
+
+function openRoom(id) {
+  const r = rooms[id];
+  document.getElementById('room-content').innerHTML = r.html;
+  document.getElementById('room-label').textContent = r.label;
+  document.getElementById('room-label').style.display = 'block';
+  document.getElementById('back-btn').style.display = 'block';
+  document.getElementById('lobby').classList.add('hidden');
+  const room = document.getElementById('room');
+  room.classList.add('visible');
+
+  // drag-to-scroll for projects
+  const ps = document.getElementById('ps');
+  if (ps) {
+    let down = false, sx, sl;
+    ps.addEventListener('mousedown', e => { down=true; sx=e.pageX-ps.offsetLeft; sl=ps.scrollLeft; ps.style.cursor='grabbing'; });
+    ps.addEventListener('mouseleave', () => { down=false; ps.style.cursor='grab'; });
+    ps.addEventListener('mouseup', () => { down=false; ps.style.cursor='grab'; });
+    ps.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); ps.scrollLeft = sl-(e.pageX-ps.offsetLeft-sx)*1.5; });
+  }
+}
+
+function closeRoom() {
+  document.getElementById('room').classList.remove('visible');
+  document.getElementById('room-label').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'none';
+  const lobby = document.getElementById('lobby');
+  lobby.classList.remove('hidden');
+}
+</script>
+</body>
+</html>
   section { padding: 3rem 2.5rem; max-width: 900px; margin: 0 auto; }
 
   /* HERO */
