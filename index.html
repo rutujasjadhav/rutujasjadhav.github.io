@@ -39,8 +39,8 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
 .sec-title{font-family:var(--display);font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:.01em;text-transform:uppercase;line-height:1;margin-bottom:.6rem;}
 .sec-title em{font-family:var(--flourish-font);font-style:normal;color:var(--safelight);font-size:.95em;}
 .sec-sub{font-size:.88rem;color:var(--grey);max-width:480px;line-height:1.7;margin-bottom:2.4rem;}
-section{border-top:1px solid var(--line);}
-section:first-of-type{border-top:none;}
+.wrap{position:relative;}
+.wrap::before{content:'';display:block;width:42px;height:3px;background:var(--safelight);border-radius:2px;margin:0 0 2.6rem;}
 
 /* ===== HERO ===== */
 #hero{padding:5.5rem 2rem 4.5rem;text-align:center;background:var(--negative);color:var(--negative-ink);}
@@ -169,7 +169,7 @@ footer{display:flex;justify-content:space-between;padding:1.4rem 2.5rem;font-fam
 
 <section id="projects">
   <div class="wrap">
-    <h2 class="sec-title"><em>T</em>hings I've built</h2>
+    <h2 class="sec-title">Things I've buil<em>t</em></h2>
     <div class="proj-list">
       <div class="proj-item">
         <div><h4>Stock Price Prediction</h4><p>Walk-forward cross-validated models across 9 stocks and 6 sectors, combining SVM, logistic regression, random forest, and a DNN with FinBERT sentiment signals. Best classifier hit 0.504 accuracy; best regressor reached 0.0194 RMSE.</p><div class="proj-tags"><span class="ptag">SVM</span><span class="ptag">FinBERT</span><span class="ptag">Walk-Forward CV</span></div></div>
@@ -237,8 +237,7 @@ footer{display:flex;justify-content:space-between;padding:1.4rem 2.5rem;font-fam
 
 <section id="contact">
   <div class="wrap">
-    <h2 class="ct-title">Let's <em>t</em>alk</h2>
-    <p class="ct-sub">Open to Summer / Fall 2026 co-ops and 2027 new grad roles</p>
+    <h2 class="ct-title">Le<em>t</em>'s talk</h2>
     <div class="ct-links">
       <a href="mailto:rutujasjadhav9@gmail.com" class="ct-btn">Email</a>
       <a href="https://linkedin.com/in/rutuja-jadhav9" target="_blank" class="ct-btn">LinkedIn</a>
