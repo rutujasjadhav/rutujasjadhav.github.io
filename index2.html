@@ -57,10 +57,14 @@ nav{position:fixed;top:0;left:var(--sp);right:var(--sp);z-index:200;display:flex
 .slide-inner::-webkit-scrollbar{width:5px;}
 .slide-inner::-webkit-scrollbar-thumb{background:var(--negative-line);border-radius:4px;}
 
-#intro .slide-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
-.camera-svg{width:min(70vw,420px);height:auto;}
-.intro-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:var(--safelight);text-transform:uppercase;margin-top:1.6rem;}
-.intro-scroll{margin-top:2.4rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;color:#8a8678;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:bob 1.8s ease infinite;}
+#intro .slide-inner{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;text-align:center;padding-top:0;}
+.camera-crop{width:100%;height:190px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end;position:relative;}
+.camera-svg{width:min(92vw,600px);height:auto;}
+.film-out{width:64px;flex:1;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;position:relative;-webkit-mask-image:linear-gradient(to bottom, black 60%, transparent 100%);mask-image:linear-gradient(to bottom, black 60%, transparent 100%);}
+.film-out::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--negative-line);transform:translateX(-50%);}
+.film-out .hole{width:14px;height:14px;border-radius:3px;background:var(--paper);position:relative;z-index:1;}
+.intro-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:var(--safelight);text-transform:uppercase;margin-top:.8rem;}
+.intro-scroll{margin-top:1.2rem;margin-bottom:1.5rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;color:#8a8678;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:bob 1.8s ease infinite;}
 @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
 .intro-scroll::after{content:'↓';font-size:1rem;}
 
@@ -73,23 +77,33 @@ nav{position:fixed;top:0;left:var(--sp);right:var(--sp);z-index:200;display:flex
 .reel-tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--safelight);text-transform:uppercase;}
 .reel-rule{flex:1;height:1px;background:var(--negative-line);}
 
-.frame-card{background:var(--paper);color:var(--ink);border-radius:30px;padding:2.4rem 2.2rem;box-shadow:0 30px 60px rgba(0,0,0,.4);}
-@media(max-width:768px){.frame-card{padding:1.8rem 1.3rem;border-radius:22px;}}
+.frame-card{background:var(--paper);color:var(--ink);border-radius:30px;padding:2.4rem 2.2rem;box-shadow:0 30px 60px rgba(0,0,0,.4);width:100%;max-width:880px;height:74vh;max-height:680px;min-height:420px;overflow-y:auto;margin:0 auto;}
+@media(max-width:768px){.frame-card{padding:1.8rem 1.3rem;border-radius:22px;height:70vh;}}
 
 .sec-title{font-family:var(--display);font-size:clamp(1.9rem,4vw,2.9rem);letter-spacing:.01em;text-transform:uppercase;line-height:1;margin-bottom:.8rem;}
 .sec-title em{font-family:var(--accent-font);font-style:italic;text-transform:none;color:var(--safelight);font-size:1.05em;}
 .sec-sub{font-size:.86rem;color:var(--grey);max-width:480px;line-height:1.7;margin-bottom:1.8rem;}
 
 #hero .slide-inner{text-align:center;}
-.hero-kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;color:var(--safelight);text-transform:uppercase;margin-bottom:1.1rem;display:inline-flex;align-items:center;gap:.6rem;}
+.hero-kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;color:var(--safelight);text-transform:uppercase;margin-bottom:1.1rem;display:inline-flex;align-items:center;gap:.6rem;position:relative;z-index:2;}
 .hero-kicker::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--safelight);animation:blink 1.6s ease infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-.hero-name{font-family:var(--display);font-size:clamp(2.3rem,6vw,4.4rem);line-height:.96;letter-spacing:.01em;text-transform:uppercase;color:var(--negative-ink);margin-bottom:1.3rem;}
+.hero-name{font-family:var(--display);font-size:clamp(2.3rem,6vw,4.4rem);line-height:.96;letter-spacing:.01em;text-transform:uppercase;color:var(--negative-ink);margin-bottom:1.3rem;position:relative;z-index:2;}
 .hero-name em{font-family:var(--accent-font);font-style:italic;text-transform:none;font-size:1.1em;color:var(--safelight);letter-spacing:0;padding:0 .05em;}
-.hero-role{font-family:var(--body);font-weight:400;font-size:.92rem;color:var(--grey);line-height:1.7;max-width:560px;margin:0 auto;}
+
+/* ===== CUTOUT WORD COLLAGE (scattered background layer) ===== */
+#hero .slide-inner{position:relative;}
+.collage-bg{position:absolute;inset:-2rem -1rem auto -1rem;height:480px;overflow:hidden;pointer-events:none;z-index:0;}
+.cutout{position:absolute;display:inline-block;font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;padding:.3rem .75rem .26rem;line-height:1;box-shadow:0 5px 0 rgba(0,0,0,.22);opacity:.85;font-size:.78rem;white-space:nowrap;}
+.cutout.c1{background:var(--negative-ink);color:var(--ink);clip-path:polygon(2% 12%,18% 0,82% 4%,100% 18%,97% 88%,80% 100%,15% 96%,0 80%);}
+.cutout.c2{background:var(--ink);color:var(--negative-ink);clip-path:polygon(4% 0,90% 6%,100% 22%,96% 92%,78% 100%,8% 94%,0 70%,6% 20%);}
+.cutout.c3{background:var(--safelight);color:var(--negative-ink);clip-path:polygon(0 8%,84% 0,100% 14%,98% 84%,86% 100%,10% 98%,2% 76%);}
+.cutout.script{font-family:var(--accent-font);font-style:italic;text-transform:none;font-weight:400;font-size:1.05rem;padding:.2rem .6rem;}
+@media(max-width:600px){.collage-bg{display:none;}}
+.hero-role{font-family:var(--body);font-weight:400;font-size:.92rem;color:var(--grey);line-height:1.7;max-width:560px;margin:0 auto;position:relative;z-index:2;}
 .hero-role b{color:var(--negative-ink);font-weight:500;}
-.hero-quote{font-family:var(--accent-font);font-style:italic;font-size:1.05rem;color:var(--negative-ink);margin-bottom:.7rem;}
-.hero-btns{display:flex;gap:.9rem;margin-top:1.6rem;flex-wrap:wrap;justify-content:center;}
+.hero-quote{font-family:var(--accent-font);font-style:italic;font-size:1.05rem;color:var(--negative-ink);margin-bottom:.7rem;position:relative;z-index:2;}
+.hero-btns{display:flex;gap:.9rem;margin-top:1.6rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:2;}
 .btn{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:.75rem 1.4rem;border:1px solid var(--negative-ink);color:var(--negative-ink);transition:all .25s ease;border-radius:100px;}
 .btn:hover{background:var(--negative-ink);color:var(--ink);}
 .btn.fill{background:var(--negative-ink);color:var(--ink);}
@@ -124,6 +138,8 @@ nav{position:fixed;top:0;left:var(--sp);right:var(--sp);z-index:200;display:flex
 
 .exp-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;}
 .exp-col-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;color:var(--safelight);text-transform:uppercase;margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:1px solid var(--line);}
+.split-label{font-family:var(--display);font-size:1.4rem;text-transform:none;letter-spacing:.02em;color:var(--ink);border:none;padding-bottom:0;margin-bottom:1rem;}
+.split-label em{font-family:var(--accent-font);font-style:italic;color:var(--safelight);font-size:1.05em;}
 .exp-entry{margin-bottom:1.1rem;}
 .exp-date{font-family:var(--mono);font-size:.56rem;color:var(--grey);letter-spacing:.05em;margin-bottom:.2rem;}
 .exp-title{font-family:var(--display);font-size:.95rem;text-transform:uppercase;letter-spacing:.02em;}
@@ -171,27 +187,47 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="intro">
     <div class="slide-inner">
-      <svg class="camera-svg" viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="60" width="200" height="120" rx="18" fill="#f3f1ea" stroke="#101010" stroke-width="4"/>
-        <rect x="70" y="30" width="100" height="34" rx="8" fill="#f3f1ea" stroke="#101010" stroke-width="4"/>
-        <rect x="160" y="74" width="34" height="20" rx="4" fill="#101010"/>
-        <circle cx="120" cy="125" r="46" fill="#101010"/>
-        <circle cx="120" cy="125" r="34" fill="#3a3835"/>
-        <circle cx="120" cy="125" r="16" fill="#0c0c0b"/>
-        <circle cx="108" cy="113" r="5" fill="#6e6a62"/>
-        <circle cx="40" cy="80" r="7" fill="#101010"/>
-      </svg>
-      <div class="intro-tag">Roll No. 00 — Loaded</div>
-      <div class="intro-scroll">Scroll to advance</div>
+      <div class="camera-crop">
+        <svg class="camera-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="60" width="360" height="120" rx="22" fill="#f3f1ea" stroke="#101010" stroke-width="5"/>
+          <rect x="150" y="20" width="100" height="46" rx="10" fill="#f3f1ea" stroke="#101010" stroke-width="5"/>
+          <rect x="296" y="78" width="48" height="26" rx="5" fill="#101010"/>
+          <circle cx="200" cy="128" r="58" fill="#101010"/>
+          <circle cx="200" cy="128" r="44" fill="#3a3835"/>
+          <circle cx="200" cy="128" r="20" fill="#0c0c0b"/>
+          <circle cx="184" cy="112" r="6" fill="#6e6a62"/>
+          <circle cx="56" cy="88" r="9" fill="#101010"/>
+          <rect x="70" y="78" width="36" height="10" rx="3" fill="#101010"/>
+        </svg>
+      </div>
+      <div class="film-out">
+        <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      </div>
+      <div class="intro-scroll">Scroll to begin</div>
     </div>
   </section>
 
   <section class="slide" id="hero">
     <div class="slide-inner">
+      <div class="collage-bg">
+        <span class="cutout c1" style="top:4%;left:6%;transform:rotate(-8deg);">DATA</span>
+        <span class="cutout c2" style="top:2%;left:62%;transform:rotate(5deg);">QUANT</span>
+        <span class="cutout c3 script" style="top:14%;left:34%;transform:rotate(-3deg);">numbers</span>
+        <span class="cutout c1" style="top:20%;left:78%;transform:rotate(7deg);">FINTECH</span>
+        <span class="cutout c2" style="top:30%;left:10%;transform:rotate(4deg);">MODELS</span>
+        <span class="cutout c3" style="top:38%;left:48%;transform:rotate(-6deg);">CONSUMER</span>
+        <span class="cutout c1 script" style="top:46%;left:4%;transform:rotate(5deg);">analytics</span>
+        <span class="cutout c2" style="top:50%;left:70%;transform:rotate(-4deg);">EDITORIAL</span>
+        <span class="cutout c3" style="top:58%;left:30%;transform:rotate(6deg);">CREATIVE</span>
+        <span class="cutout c1" style="top:64%;left:58%;transform:rotate(-7deg);">DESIGN</span>
+        <span class="cutout c2 script" style="top:70%;left:14%;transform:rotate(3deg);">storytelling</span>
+        <span class="cutout c3" style="top:78%;left:46%;transform:rotate(-5deg);">INSIGHTS</span>
+        <span class="cutout c1" style="top:84%;left:74%;transform:rotate(8deg);">PATTERNS</span>
+        <span class="cutout c2" style="top:90%;left:2%;transform:rotate(-3deg);">NARRATIVES</span>
+      </div>
       <div class="hero-kicker">Developing — Summer / Fall 2026</div>
-      <h1 class="hero-name">Data Sci<em>e</em>ntist &amp; Analyst</h1>
+      <h1 class="hero-name">Rutuja Jadhav</h1>
       <p class="hero-quote">Curious about data, design, and everything in between.</p>
-      <p class="hero-role">MS Data Science candidate at Northeastern University, building toward <b>fintech, quantitative, and consumer analytics</b> roles — with a background in editorial design and a habit of treating every dataset like a story worth telling well.</p>
       <div class="hero-btns">
         <a href="#projects" class="btn fill">View the work</a>
         <a href="#contact" class="btn">Get in touch</a>
@@ -201,9 +237,9 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="about">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 01 — About</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">About</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="sec-title">The frame <em>behind</em> the dataset.</h2>
+        <h2 class="sec-title">About</h2>
         <div class="about-grid">
           <div>
             <p class="about-quote">"I treat data the way I treat a layout — every detail earns its place."</p>
@@ -218,7 +254,6 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
             <div class="fact-row"><span class="fact-k">Studying</span><span class="fact-v">MS Data Science, NEU</span></div>
             <div class="fact-row"><span class="fact-k">GPA</span><span class="fact-v">3.83 / 4.0</span></div>
             <div class="fact-row"><span class="fact-k">Role</span><span class="fact-v">Senator, GSG</span></div>
-            <div class="fact-row"><span class="fact-k">Magazine</span><span class="fact-v"><a href="#">Colloque ↗</a></span></div>
           </div>
         </div>
       </div>
@@ -227,9 +262,9 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="skills">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 02 — Tech Stack</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Tech Stack</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="sec-title">Tools of <em>the</em> trade.</h2>
+        <h2 class="sec-title">Tech Stack</h2>
         <div class="sk-grid">
           <div class="sk-cell"><span class="n">01</span><h4>Languages</h4><div class="sk-chips"><span>Python</span><span>SQL</span><span>R</span><span>Java</span></div></div>
           <div class="sk-cell"><span class="n">02</span><h4>ML &amp; Modeling</h4><div class="sk-chips"><span>Scikit-learn</span><span>TensorFlow</span><span>Keras</span><span>SVM</span></div></div>
@@ -242,9 +277,9 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="projects">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 03 — Selected Work</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Projects</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="sec-title">Five frames, <em>developed.</em></h2>
+        <h2 class="sec-title">Projects</h2>
         <div class="frame-list">
           <div class="proj-item"><div class="proj-no">01</div><div class="proj-body"><h4>Stock Price Prediction</h4><p>Walk-forward CV across 9 stocks, 6 sectors — SVM, LR, RF, DNN with FinBERT sentiment. Best classifier 0.504 acc; best regressor 0.0194 RMSE.</p><span class="proj-date">APR 2026</span></div></div>
           <div class="proj-item"><div class="proj-no">02</div><div class="proj-body"><h4>Restaurant Visits DB System</h4><p>8-table normalized MySQL schema on Aiven, built in R with stored procedures and an R Markdown analytics report.</p><span class="proj-date">MAR 2026</span></div></div>
@@ -258,17 +293,17 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="experience">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 04 — Experience</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Experience</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="sec-title">Time <em>exposed.</em></h2>
+        <h2 class="sec-title">Experience</h2>
         <div class="exp-cols">
           <div>
-            <div class="exp-col-label">Education</div>
+            <div class="exp-col-label split-label">EDU<em>cation</em></div>
             <div class="exp-entry"><div class="exp-date">SEP 2025 – MAY 2027</div><div class="exp-title">MS, Data Science</div><div class="exp-org">Khoury College, NEU · GPA 3.83</div></div>
             <div class="exp-entry"><div class="exp-date">2021 – 2025</div><div class="exp-title">B.Tech, CSE — Cybersecurity</div><div class="exp-org">NMIMS MPSTME · GPA 3.70</div></div>
           </div>
           <div>
-            <div class="exp-col-label">Internships</div>
+            <div class="exp-col-label split-label">INTERN<em>ship</em></div>
             <div class="exp-entry"><div class="exp-date">JUL – AUG 2025</div><div class="exp-title">Audit Intern, ITDA</div><div class="exp-org">Deloitte</div><ul class="exp-body"><li>SOC 1 / SOC 2 audit engagements and control reviews.</li><li>Sampling for control tests, planning and summary memos.</li></ul></div>
             <div class="exp-entry"><div class="exp-date">MAY – JUL 2024</div><div class="exp-title">Data Science Intern</div><div class="exp-org">Grok Learning</div><ul class="exp-body"><li>Sentiment model — 87.71% accuracy; object detection CNN — 57.2% mAP on Raspberry Pi.</li><li>Waste segmentation model — 96.8% accuracy.</li></ul></div>
           </div>
@@ -279,12 +314,12 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="activities">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 05 — Beyond the Lab</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Activities</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="sec-title">Outtakes, <em>kept in.</em></h2>
+        <h2 class="sec-title">Activities</h2>
         <div class="act-grid">
           <div class="act-cell"><div class="act-date">FEB 2026 – PRESENT</div><h4>Senator, External Affairs</h4><div class="act-org">Graduate Student Government, NEU</div></div>
-          <div class="act-cell"><div class="act-date">ONGOING</div><h4>Editor-in-Chief, Colloque</h4><div class="act-org">Co-founded business magazine</div></div>
+          <div class="act-cell"><div class="act-date">JAN – JUN 2023</div><h4>Editor-in-Chief, Colloque</h4><div class="act-org">Co-founded business magazine — <a href="#" style="color:var(--safelight);">read it ↗</a></div></div>
           <div class="act-cell"><div class="act-date">NOV 2023 – JUN 2025</div><h4>Tumor Bed Volume Research</h4><div class="act-org">Led 6-person team, Nanavati Max Hospital</div></div>
           <div class="act-cell"><div class="act-date">60+ HRS</div><h4>Teaching Volunteer</h4><div class="act-org">Spark-A-Change Foundation</div></div>
         </div>
@@ -294,9 +329,9 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
 
   <section class="slide" id="contact">
     <div class="slide-inner">
-      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Roll 06 — Contact</span><div class="reel-rule"></div></div>
+      <div class="reel-head"><svg class="reel-icon" viewBox="0 0 40 40"><circle class="ring" cx="20" cy="20" r="17"/><circle class="hub" cx="20" cy="20" r="4"/><line class="spoke" x1="20" y1="6" x2="20" y2="14"/><line class="spoke" x1="20" y1="26" x2="20" y2="34"/><line class="spoke" x1="6" y1="20" x2="14" y2="20"/><line class="spoke" x1="26" y1="20" x2="34" y2="20"/></svg><span class="reel-tag">Contact</span><div class="reel-rule"></div></div>
       <div class="frame-card">
-        <h2 class="ct-title">Let's <em>develop</em> something.</h2>
+        <h2 class="ct-title">Contact</h2>
         <p class="ct-sub">Open to Summer / Fall 2026 co-ops and 2027 new grad roles</p>
         <div class="ct-links">
           <a href="mailto:rutujasjadhav9@gmail.com" class="ct-btn">Email</a>
@@ -305,7 +340,7 @@ footer{position:absolute;bottom:.6rem;left:0;right:0;display:flex;justify-conten
           <a href="#" class="ct-btn">Resume ↓</a>
         </div>
       </div>
-      <footer><span>© 2026 Rutuja Jadhav</span><span>Roll 06, fully developed</span></footer>
+      <footer><span>© 2026 Rutuja Jadhav</span><span>Boston, MA</span></footer>
     </div>
   </section>
 
