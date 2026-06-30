@@ -37,7 +37,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
 .wrap{max-width:880px;margin:0 auto;padding:5rem 2rem;}
 .eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--safelight);text-transform:uppercase;margin-bottom:.8rem;}
 .sec-title{font-family:var(--display);font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:.01em;text-transform:uppercase;line-height:1;margin-bottom:.6rem;}
-.sec-title em{font-family:var(--flourish-font);font-style:normal;text-transform:none;color:var(--safelight);font-size:.95em;}
+.sec-title em{font-family:var(--flourish-font);font-style:normal;color:var(--safelight);font-size:.95em;}
 .sec-sub{font-size:.88rem;color:var(--grey);max-width:480px;line-height:1.7;margin-bottom:2.4rem;}
 section{border-top:1px solid var(--line);}
 section:first-of-type{border-top:none;}
@@ -45,7 +45,7 @@ section:first-of-type{border-top:none;}
 /* ===== HERO ===== */
 #hero{padding:5.5rem 2rem 4.5rem;text-align:center;background:var(--negative);color:var(--negative-ink);}
 .hero-name{font-family:var(--display);font-size:clamp(2.6rem,8vw,5rem);line-height:.95;letter-spacing:.01em;text-transform:uppercase;margin-bottom:1rem;}
-.hero-name em{font-family:var(--flourish-font);font-style:normal;text-transform:none;font-size:1em;color:var(--safelight);padding:0 .03em;}
+.hero-name em{font-family:var(--flourish-font);font-style:normal;font-size:1em;color:var(--safelight);padding:0 .03em;}
 .hero-quote{font-family:var(--accent-font);font-style:italic;font-size:1.1rem;color:var(--negative-ink);margin-bottom:1rem;}
 .hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-bottom:1.8rem;}
 .hero-tags span{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:#a8a49a;border:1px solid #322f2b;border-radius:100px;padding:.3rem .8rem;text-transform:uppercase;}
@@ -60,9 +60,7 @@ section:first-of-type{border-top:none;}
 .about-quote{font-family:var(--accent-font);font-style:italic;font-size:1.25rem;line-height:1.5;margin-bottom:1rem;}
 .about-body{font-size:.9rem;color:var(--grey);line-height:1.8;margin-bottom:.9rem;}
 .about-photo{width:100%;max-width:220px;aspect-ratio:3/4;object-fit:cover;border-radius:18px;border:1px solid var(--line);}
-.about-photo-cap{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--grey);text-transform:uppercase;margin-top:.8rem;}
-.fact-line{font-size:.82rem;color:var(--grey);margin-top:1.2rem;line-height:1.8;}
-.fact-line b{color:var(--ink);font-weight:500;}
+
 @media(max-width:700px){.about-grid{grid-template-columns:1fr;}.about-photo{max-width:160px;}}
 
 /* ===== SKILLS ===== */
@@ -133,7 +131,7 @@ footer{display:flex;justify-content:space-between;padding:1.4rem 2.5rem;font-fam
   <h1 class="hero-name">Rutu<em>j</em>a Jadhav</h1>
   <p class="hero-quote">Curious about data, design, and everything in between.</p>
   <div class="hero-tags">
-    <span>Fintech</span><span>Quant Research</span><span>Consumer Analytics</span><span>Editorial Design</span>
+    <span>UI/UX</span><span>Fintech</span><span>Quant Research</span><span>Consumer Analytics</span>
   </div>
   <div class="hero-btns">
     <a href="#projects" class="btn fill">View the work</a>
@@ -148,13 +146,11 @@ footer{display:flex;justify-content:space-between;padding:1.4rem 2.5rem;font-fam
     <div class="about-grid">
       <div>
         <p class="about-quote">"I treat data the way I treat a layout — every detail earns its place."</p>
-        <p class="about-body">I'm a graduate student in Khoury College's MS Data Science program, originally from Mumbai and now based in Boston. My work sits at the intersection of statistical modeling and storytelling.</p>
-        <p class="about-body">I'm passionate about fintech, consumer analytics, and predictive modeling — where data shapes how people experience products. I co-founded and edited a business magazine, and bring that editorial eye to how I structure and present data.</p>
-        <p class="fact-line"><b>Boston, MA</b> · MS Data Science, Northeastern (GPA 3.83) · Senator, External Affairs, GSG</p>
+        <p class="about-body">I'm a graduate student in Khoury College's MS Data Science program, currently in Boston. My work sits at the intersection of statistical modeling and storytelling — I like turning messy datasets into something people can actually act on.</p>
+        <p class="about-body">Outside the terminal, I'm into editorial design and UI/UX, and I'm currently on a 700+ day Duolingo streak. I've always enjoyed taking on leadership roles and contributing back to the people around me — from serving as Joint Secretary of my college's Business Management Cell in undergrad to my current role as Senator for External Affairs in Northeastern's Graduate Student Government. Go Huskies.</p>
       </div>
       <div>
         <img class="about-photo" src="https://raw.githubusercontent.com/rutujasjadhav/rutujasjadhav.github.io/main/images/profile.jpeg" alt="Rutuja Jadhav"/>
-        <div class="about-photo-cap">Boston, MA</div>
       </div>
     </div>
   </div>
